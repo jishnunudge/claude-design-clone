@@ -1,11 +1,10 @@
-<sub><b>🌐 English</b> · <a href="README.md">中文</a></sub>
+<sub>See <a href="README.md">README.md</a> — the repository has been fully translated to English.</sub>
 
 <div align="center">
 
 # Huashu Design
 
 > *"Type. Hit enter. A finished design lands in your lap."*
-> *「打字。回车。一份能交付的设计。」*
 
 [![License](https://img.shields.io/badge/License-Personal%20Use%20Only-orange.svg)](LICENSE)
 [![Agent-Agnostic](https://img.shields.io/badge/Agent-Agnostic-blueviolet)](https://skills.sh)
