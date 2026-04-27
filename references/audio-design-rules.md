@@ -1,35 +1,35 @@
 # Audio Design Rules · huashu-design
 
-> Audio application recipes for all animation demos. Used alongside `sfx-library.md` (asset inventory).
-> Battle-tested through: huashu-design hero v1–v9 iterations · Deep Gemini analysis of 3 official Anthropic videos · 8000+ A/B comparisons
+> Audio recipes for all animation demos. Used alongside `sfx-library.md`.
+> Battle-tested: huashu-design hero v1–v9 · Deep Gemini analysis of 3 Anthropic videos · 8000+ A/B comparisons
 
 ---
 
 ## Core Principle · Dual-Track Audio (Non-Negotiable)
 
-Animation audio **must be designed in two independent layers** — doing only one layer is not enough:
+Animation audio **must be designed in two independent layers**:
 
 | Layer | Role | Time Scale | Relationship to Visuals | Frequency Range |
 |---|---|---|---|---|
-| **SFX (beat layer)** | Marks each visual beat | Short, 0.2–2 seconds | **Tight sync** (frame-level alignment) | **High-freq 800Hz+** |
-| **BGM (ambient base)** | Sets emotional tone, fills the soundscape | Continuous, 20–60 seconds | Loose sync (section-level) | **Mid-low freq <4kHz** |
+| **SFX (beat layer)** | Marks each visual beat | Short, 0.2–2s | **Tight sync** (frame-level) | **High-freq 800Hz+** |
+| **BGM (ambient base)** | Sets emotional tone, fills soundscape | Continuous, 20–60s | Loose sync (section-level) | **Mid-low freq <4kHz** |
 
-**An animation with only BGM is broken** — the audience subconsciously notices that "things are moving but nothing is responding to the sound," and this is the root cause of the cheap feel.
+**Animation with only BGM is broken** — the audience subconsciously notices "things are moving but nothing responds to the sound." This is the root cause of cheap feel.
 
 ---
 
 ## Gold Standard · Golden Ratios
 
-These values were derived from empirical testing of 3 official Anthropic videos combined with our own v9 final cut comparisons. They are **hardened engineering parameters** — apply them directly:
+Derived from 3 Anthropic videos + v9 final cut comparisons. **Hardened engineering parameters** — apply directly:
 
 ### Volume
-- **BGM volume**: `0.40–0.50` (relative to full scale 1.0)
+- **BGM volume**: `0.40–0.50`
 - **SFX volume**: `1.00`
-- **Loudness difference**: BGM peak is **−6 to −8 dB below SFX** (prominence comes from the loudness gap, not the absolute SFX volume)
-- **amix parameter**: `normalize=0` (never use normalize=1 — it flattens dynamic range)
+- **Loudness gap**: BGM peak **−6 to −8 dB below SFX** (prominence comes from the gap, not absolute SFX volume)
+- **amix parameter**: `normalize=0` (never use normalize=1 — flattens dynamic range)
 
 ### Frequency Separation (P1 Hard Optimization)
-Anthropic's secret is not "louder SFX" — it's **frequency layering**:
+Anthropic's secret is **frequency layering**, not louder SFX:
 
 ```bash
 [bgm_raw]lowpass=f=4000[bgm]      # BGM capped at mid-low freq <4kHz
@@ -37,35 +37,34 @@ Anthropic's secret is not "louder SFX" — it's **frequency layering**:
 [bgm][sfx]amix=inputs=2:duration=first:normalize=0[a]
 ```
 
-Why: The human ear is most sensitive in the 2–5kHz range (the "presence band"). If SFX all sit in this range while BGM covers the full spectrum, **SFX gets masked by BGM's high-frequency content**. Using highpass to push SFX up + lowpass to pull BGM down gives each its own territory on the spectrum — SFX clarity jumps a full grade.
+Why: Human ear is most sensitive 2–5kHz (the "presence band"). If SFX sit there while BGM covers full spectrum, **SFX gets masked**. highpass on SFX + lowpass on BGM gives each territory — SFX clarity jumps a full grade.
 
 ### Fade
-- BGM in: `afade=in:st=0:d=0.3` (0.3s, avoids a hard cut)
-- BGM out: `afade=out:st=N-1.5:d=1.5` (1.5s long tail, sense of resolution)
-- SFX have their own built-in envelope — no additional fade needed
+- BGM in: `afade=in:st=0:d=0.3` (avoids hard cut)
+- BGM out: `afade=out:st=N-1.5:d=1.5` (long tail, sense of resolution)
+- SFX have built-in envelope — no extra fade needed
 
 ---
 
 ## SFX Cue Design Rules
 
-### Density (SFX count per 10 seconds)
-Empirical testing of 3 Anthropic videos yields three density tiers:
+### Density (SFX per 10s)
+Empirical testing of 3 Anthropic videos:
 
 | Video | SFX per 10s | Product Personality | Scenario |
 |---|---|---|---|
-| Artifacts (ref-1) | **~9 per 10s** | Feature-dense, information-rich | Complex tool demo |
+| Artifacts (ref-1) | **~9 per 10s** | Feature-dense, info-rich | Complex tool demo |
 | Code Desktop (ref-2) | **0** | Pure atmosphere, meditative | Developer focus state |
 | Word (ref-3) | **~4 per 10s** | Balanced, office rhythm | Productivity tool |
 
 **Heuristics**:
-- Calm/focused product personality → Low SFX density (0–3 per 10s), BGM-led
-- Lively/information-dense product personality → High SFX density (6–9 per 10s), SFX drives the rhythm
-- **Don't fill every visual beat** — negative space is more sophisticated than density. **Removing 30–50% of cues makes the remaining ones more dramatic**.
+- Calm/focused → Low density (0–3/10s), BGM-led
+- Lively/info-dense → High density (6–9/10s), SFX drives rhythm
+- **Don't fill every beat** — negative space is more sophisticated. **Removing 30–50% of cues makes remaining ones more dramatic**.
 
 ### Cue Selection Priority
-Not every visual beat needs a SFX. Use this priority order:
 
-**P0 — Always cue** (omitting creates a jarring absence):
+**P0 — Always cue** (omitting creates jarring absence):
 - Typing (terminal / input field)
 - Click / selection (user decision moments)
 - Focus change (visual protagonist shifts)
@@ -83,15 +82,15 @@ Not every visual beat needs a SFX. Use this priority order:
 - Decorative ambient
 
 ### Timestamp Alignment Precision
-- **Same-frame alignment** (0ms error): click / focus change / logo landing
-- **1–2 frames early** (−33ms): fast whoosh (gives the audience psychological anticipation)
-- **1–2 frames late** (+33ms): object landing / impact (matches real-world physics)
+- **Same-frame** (0ms error): click / focus change / logo landing
+- **1–2 frames early** (−33ms): fast whoosh (psychological anticipation)
+- **1–2 frames late** (+33ms): object landing / impact (matches physics)
 
 ---
 
 ## BGM Selection Decision Tree
 
-huashu-design skill ships with 6 BGM tracks (`assets/bgm-*.mp3`):
+huashu-design ships 6 BGM tracks (`assets/bgm-*.mp3`):
 
 ```
 What is the animation's personality?
@@ -99,16 +98,16 @@ What is the animation's personality?
 ├─ Tutorial / tool walkthrough → bgm-tutorial.mp3 (warm, instructional)
 ├─ Educational / concept explanation → bgm-educational.mp3 (curious, thoughtful)
 ├─ Marketing / brand promotion → bgm-ad.mp3 (upbeat, promotional)
-└─ Need a variation of the same style → bgm-*-alt.mp3 (alternate versions)
+└─ Need variation of same style → bgm-*-alt.mp3 (alternate versions)
 ```
 
-### When No BGM Is the Right Call
-Reference Anthropic Code Desktop (ref-2): **0 SFX + pure Lo-fi BGM** can still feel premium.
+### When No BGM Is Right
+Reference: Anthropic Code Desktop (ref-2) — **0 SFX + pure Lo-fi BGM** still feels premium.
 
-**When to choose no BGM**:
+Choose no BGM when:
 - Animation is <10s (BGM never establishes itself)
 - Product personality is "focused / meditative"
-- The scene already has ambient sound or voiceover
+- Scene already has ambient sound or voiceover
 - SFX density is high (avoid auditory overload)
 
 ---
@@ -139,7 +138,7 @@ Duration: 30–45 seconds
 BGM: bgm-tutorial.mp3 · 50%
 SFX density: 0–2 per 10s (minimal)
 
-Strategy: Let BGM + voiceover drive; SFX only at decisive moments (file save / command execution complete)
+Strategy: Let BGM + voiceover drive; SFX only at decisive moments (file save / command execution)
 ```
 
 ### Recipe C · AI Generation Demo
@@ -149,12 +148,12 @@ BGM: bgm-tech.mp3 or no BGM
 SFX density: ~8 per 10s (high density)
 
 Cues:
-  User input         → type + enter
-  AI starts processing → magic/ai-process (1.2s loop)
-  Generation complete → feedback/complete-done
-  Result appears     → magic/sparkle
+  User input            → type + enter
+  AI starts processing  → magic/ai-process (1.2s loop)
+  Generation complete   → feedback/complete-done
+  Result appears        → magic/sparkle
 
-Highlight: ai-process can loop 2–3 times throughout the entire generation sequence
+Highlight: ai-process can loop 2–3× throughout generation sequence
 ```
 
 ### Recipe D · Pure Atmosphere Long Take (Reference: Artifacts)
@@ -163,7 +162,7 @@ Duration: 10–15 seconds
 BGM: none
 SFX: 3–5 carefully chosen standalone cues
 
-Strategy: Each SFX is the protagonist — no BGM "smearing" everything together.
+Strategy: Each SFX is protagonist — no BGM smearing everything together.
 Best for: Single-product slow shots, close-up showcases
 ```
 
@@ -191,9 +190,9 @@ ffmpeg -y \
   -map "[mixed]" -t 25 sfx-track.mp3
 ```
 **Key parameters**:
-- `adelay=N|N`: First value is left-channel delay (ms), second is right — write both to ensure stereo alignment
+- `adelay=N|N`: Left/right channel delay (ms) — write both for stereo alignment
 - `normalize=0`: Preserves dynamic range — critical!
-- `-t 25`: Truncates to the specified duration
+- `-t 25`: Truncates to specified duration
 
 ### Template 3 · Video + SFX Track + BGM (with frequency separation)
 ```bash
@@ -212,43 +211,43 @@ ffmpeg -y -i video.mp4 -i sfx-track.mp3 -i bgm.mp3 \
 
 | Symptom | Root Cause | Fix |
 |---|---|---|
-| SFX inaudible | BGM high-freq content masking it | Add `lowpass=f=4000` to BGM + `highpass=f=800` to SFX |
+| SFX inaudible | BGM high-freq masking | Add `lowpass=f=4000` to BGM + `highpass=f=800` to SFX |
 | SFX painfully loud | SFX absolute volume too high | Drop SFX to 0.7 and BGM to 0.3, preserve the gap |
-| BGM and SFX rhythm conflict | Wrong BGM choice (used music with a strong beat) | Switch to an ambient / minimal synth BGM |
-| BGM cuts off abruptly at end | No fade out applied | `afade=out:st=N-1.5:d=1.5` |
-| SFX blur together | Too many cues + each SFX too long | Keep SFX under 0.5s, cue intervals ≥ 0.2s |
-| WeChat mp4 has no audio | WeChat sometimes mutes autoplay | Don't worry — users hear it when they tap; GIFs have no audio by nature |
+| BGM/SFX rhythm conflict | BGM has strong beat | Switch to ambient / minimal synth BGM |
+| BGM cuts abruptly at end | No fade out | `afade=out:st=N-1.5:d=1.5` |
+| SFX blur together | Too many cues + SFX too long | Keep SFX under 0.5s, intervals ≥ 0.2s |
+| WeChat mp4 has no audio | WeChat mutes autoplay | Don't worry — users hear on tap; GIFs have no audio |
 
 ---
 
 ## Syncing with Visuals (Advanced)
 
-### SFX Timbre Must Match the Visual Style
-- Warm beige / paper-texture visuals → SFX in **wood / soft** timbres (Morse, paper snap, soft click)
-- Cold dark-tech visuals → SFX in **metal / digital** timbres (beep, pulse, glitch)
-- Hand-drawn / playful visuals → SFX in **cartoon / exaggerated** timbres (boing, pop, zap)
+### SFX Timbre Must Match Visual Style
+- Warm beige / paper-texture → SFX in **wood / soft** timbres (Morse, paper snap, soft click)
+- Cold dark-tech → SFX in **metal / digital** timbres (beep, pulse, glitch)
+- Hand-drawn / playful → SFX in **cartoon / exaggerated** timbres (boing, pop, zap)
 
-Our current `apple-gallery-showcase.md` warm beige palette → pairs with `keyboard/type.mp3` (mechanical) + `container/card-snap.mp3` (soft) + `impact/logo-reveal-v2.mp3` (cinematic bass)
+Current `apple-gallery-showcase.md` warm beige palette → pairs with `keyboard/type.mp3` (mechanical) + `container/card-snap.mp3` (soft) + `impact/logo-reveal-v2.mp3` (cinematic bass)
 
-### SFX Can Lead the Visual Rhythm
-Advanced technique: **Design the SFX timeline first, then adjust the visual animation to align to the SFX** (not the other way around).
-Because each SFX cue is a "clock tick," visual animation adapting to the SFX rhythm stays rock-solid — the reverse (SFX chasing visuals) often results in ±1 frame misalignment that feels off.
+### SFX Can Lead Visual Rhythm
+Advanced: **Design SFX timeline first, then adjust visual animation to align to SFX** (not the reverse).
+Each SFX cue is a "clock tick" — visual animation adapting to SFX rhythm stays rock-solid. SFX chasing visuals often results in ±1 frame misalignment.
 
 ---
 
-## Quality Checklist (Pre-Publish Self-Review)
+## Quality Checklist (Pre-Publish)
 
 - [ ] Loudness gap: SFX peak − BGM peak = −6 to −8 dB?
 - [ ] Frequency: BGM lowpass 4kHz + SFX highpass 800Hz?
-- [ ] amix normalize=0 (preserves dynamic range)?
+- [ ] amix normalize=0?
 - [ ] BGM fade-in 0.3s + fade-out 1.5s?
-- [ ] SFX count appropriate for the scene personality?
-- [ ] Each SFX frame-aligned with its visual beat (within ±1 frame)?
+- [ ] SFX count appropriate for scene personality?
+- [ ] Each SFX frame-aligned with visual beat (within ±1 frame)?
 - [ ] Logo reveal SFX long enough (recommended 1.5s)?
-- [ ] Mute BGM and listen: does the SFX track alone have sufficient rhythmic feel?
+- [ ] Mute BGM and listen: does SFX track alone have rhythmic feel?
 - [ ] Mute SFX and listen: does BGM alone carry emotional shape?
 
-Each layer should hold up on its own. If it only sounds good when both are combined, the design isn't done.
+Each layer should hold up on its own. If it only sounds good combined, the design isn't done.
 
 ---
 

@@ -1,7 +1,7 @@
 # Design Philosophy Style Library: 20 Systems
 
-> A style library for visual design (web / PPT / PDF / infographics / illustrations / apps, etc.).
-> Each style provides: philosophical core + key characteristics + prompt DNA (use in combination with scene templates).
+> Style library for visual design (web / PPT / PDF / infographics / illustrations / apps).
+> Each style: philosophical core + key characteristics + prompt DNA (combine with scene templates).
 
 ## Style × Scene × Execution Path Quick Reference
 
@@ -32,7 +32,7 @@
 > AI Gen: ★★★ = Great direct output / ★★☆ = Needs adjustment / ★☆☆ = Recommend HTML execution
 > Best Path: AI Gen (direct image output) / HTML (code rendering, precise data) / Hybrid (HTML layout + AI-generated imagery)
 
-**Core pattern**: Styles with distinct visual elements (illustration / particles / generative art) produce better AI direct output; styles relying on precise typography and data (grid / information architecture / whitespace) are more controllable via HTML rendering.
+**Core pattern**: Styles with distinct visual elements (illustration / particles / generative art) → better AI direct output. Styles relying on precise typography and data (grid / information architecture / whitespace) → more controllable via HTML.
 
 ---
 
@@ -43,9 +43,9 @@
 **Philosophy**: Typography is language; the grid is thought
 **Key characteristics**:
 - Extremely restrained color (black/white + 1 brand color)
-- Modern interpretation of the Swiss grid system
-- Typographic composition as the primary visual language
-- Strategic use of negative space (60%+ whitespace)
+- Modern Swiss grid interpretation
+- Typographic composition as primary visual language
+- Strategic negative space (60%+ whitespace)
 
 **Prompt DNA**:
 ```
@@ -68,7 +68,7 @@ Pentagram/Michael Bierut style:
 **Key characteristics**:
 - Cartographic thinking applied to information design
 - Algorithmically generated organic patterns
-- Warm data visualization palette (ochre, sage green, deep blue)
+- Warm data viz palette (ochre, sage green, deep blue)
 - Interactive layered systems
 
 **Prompt DNA**:
@@ -88,11 +88,11 @@ Stamen Design aesthetic:
 ---
 
 ### 03. Information Architects - Content-First Principle
-**Philosophy**: Design is not decoration — it is the architecture of content
+**Philosophy**: Design is the architecture of content, not decoration
 **Key characteristics**:
-- Extreme clarity in content hierarchy
-- System fonts only (optimized for reading)
-- Commitment to the blue hyperlink tradition
+- Extreme content hierarchy clarity
+- System fonts only (reading-optimized)
+- Blue hyperlink tradition
 - Performance as aesthetics
 
 **Prompt DNA**:
@@ -115,7 +115,7 @@ Information Architects philosophy:
 **Philosophy**: Every pixel must carry information
 **Key characteristics**:
 - Scientific journal rigor + design elegance
-- Precise visualization of quantitative data
+- Precise quantitative data visualization
 - Calm professional palette (grays, navy)
 - Designed citation and annotation systems
 
@@ -191,8 +191,8 @@ Active Theory WebGL aesthetic:
 **Philosophy**: Code is the designer
 **Key characteristics**:
 - Generative art systems
-- Dynamic graphics that differ on every visit
-- Intelligent composition of abstract geometry
+- Dynamic graphics differing on every visit
+- Intelligent abstract geometry composition
 - Balance between technical feel and artistic quality
 
 **Prompt DNA**:
@@ -241,7 +241,7 @@ Resn interactive storytelling approach:
 ### 09. Experimental Jetset - Conceptual Minimalism
 **Philosophy**: One idea = one form
 **Key characteristics**:
-- A single visual metaphor runs through the entire design
+- Single visual metaphor through entire design
 - Mondrian color system: blue/red/yellow + black/white
 - Typography as graphic element
 - Anti-commercial, honest design
@@ -265,7 +265,7 @@ Experimental Jetset conceptual minimalism:
 ### 10. Müller-Brockmann Legacy - Swiss Grid Purism
 **Philosophy**: Objectivity is beauty
 **Key characteristics**:
-- Mathematically precise grid system (8pt baseline)
+- Mathematically precise grid (8pt baseline)
 - Absolute left-alignment or centering
 - Monochrome or two-color schemes
 - Functionalism above all
@@ -291,7 +291,7 @@ Josef Müller-Brockmann Swiss modernism:
 **Key characteristics**:
 - Luxury-grade whitespace (70%+)
 - Subtle font-weight contrast (200-600)
-- Strategic use of a single accent color
+- Strategic single accent color
 - Rhythmic breathing room
 
 **Prompt DNA**:
@@ -342,7 +342,7 @@ Sagmeister & Walsh joyful philosophy:
 **Key characteristics**:
 - Hand-drawn-feeling algorithmic graphics
 - Real-time generative art
-- Pure expression in black and white
+- Pure black and white expression
 - Visibility of the tool itself
 
 **Prompt DNA**:
@@ -389,7 +389,7 @@ Raven Kwok parametric aesthetic:
 **Philosophy**: The future is not cold — it is a solitary poem
 **Key characteristics**:
 - Film-grade light and shadow
-- A warmer take on cyberpunk (orange/teal, not cold blue)
+- Warmer cyberpunk (orange/teal, not cold blue)
 - Narrative concept design
 - Refined industrial aesthetics
 
@@ -412,7 +412,7 @@ Ash Thorp cinematic concept art:
 ### 16. Territory Studio - Fictional Screen Interfaces
 **Philosophy**: Today's imagination of tomorrow's UI
 **Key characteristics**:
-- Screen design for science fiction films (FUI)
+- Screen design for sci-fi films (FUI)
 - Holographic projection feel
 - Multi-layered overlapping data visualization
 - Believable futurism
@@ -465,7 +465,7 @@ Takram Japanese speculative design:
 **Key characteristics**:
 - Extreme whitespace (80%+)
 - Digitalization of paper texture
-- Layers of white (warm white, cool white, off-white)
+- Layers of white (warm, cool, off-white)
 - Visualization of tactility
 
 **Prompt DNA**:
@@ -511,7 +511,7 @@ Irma Boom book architecture style:
 ### 20. Neo Shen - Eastern Light and Shadow Poetry
 **Philosophy**: Technology needs human warmth
 **Key characteristics**:
-- Digital interpretation of ink-wash spreading
+- Digital ink-wash spreading interpretation
 - Soft glow and halo effects
 - Poetic negative space
 - Emotional palette (deep blue, warm gray, soft gold)
@@ -538,18 +538,18 @@ Neo Shen poetic Chinese aesthetic:
 
 ### Core Principle: Describe Mood, Not Layout
 
-The key to AI image generation: short prompts > long prompts. Describing 3 sentences of mood and content works better than 30 lines of layout details.
+Short prompts > long prompts. 3 sentences of mood beats 30 lines of layout details.
 
 | Kills Diversity | Sparks Creativity |
 |----------------|------------------|
 | Specify color ratios (60%/25%/15%) | Describe mood ("warm like Sunday morning") |
-| Dictate layout positions ("title centered, image on right") | Reference a specific aesthetic ("Pentagram editorial feel") |
+| Dictate layout positions ("title centered, image on right") | Reference specific aesthetic ("Pentagram editorial feel") |
 | Constrain character poses and expressions | Let AI naturally interpret the style |
-| List every visual element to include | Describe what the audience should feel |
+| List every visual element | Describe what the audience should feel |
 
 ### Good / Bad Examples
 
-**Bad — Over-constrained (AI output is empty and flat):**
+**Bad — Over-constrained (output is empty and flat):**
 ```
 Professional presentation slide. Dark background, light text.
 Title centered at top. Two columns below. Left column: bullet points.
@@ -567,8 +567,8 @@ typography. The data tells a story of dramatic channel shift.
 
 ### Choosing Your Execution Path
 
-Based on the "Best Path" column in the quick reference table:
-- **AI Gen**: Styles with distinct visual elements (06/07/12/13/14/15/16/20) — use Gemini/Midjourney for direct output
+Based on "Best Path" in the quick reference table:
+- **AI Gen**: Styles with distinct visual elements (06/07/12/13/14/15/16/20) — use Gemini/Midjourney
 - **HTML rendering**: Styles relying on precise typography (01/03/04/10/11/17/18) — code controls data and layout
 - **Hybrid**: HTML for structural layout + AI-generated imagery/backgrounds (02/05/08/09/19)
 

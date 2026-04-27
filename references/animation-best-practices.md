@@ -1,21 +1,20 @@
 # Animation Best Practices · Positive Animation Design Grammar
 
-> Derived from a deep analysis of three official Anthropic product animations (Claude Design / Claude Code Desktop / Claude for Word),
-> distilling the "Anthropic-grade" animation design rules.
+> Derived from deep analysis of three official Anthropic product animations (Claude Design / Claude Code Desktop / Claude for Word),
+> distilling "Anthropic-grade" animation design rules.
 >
-> Use alongside `animation-pitfalls.md` (the anti-patterns checklist) — this file is "**what you should do**",
+> Use alongside `animation-pitfalls.md` (anti-patterns checklist) — this file is "**what you should do**",
 > pitfalls is "**what not to do**". They are orthogonal — read both.
 >
-> **Scope declaration**: This file covers only **motion logic and expressive style** — it does not introduce any specific brand color values.
+> **Scope**: Covers only **motion logic and expressive style** — no specific brand color values.
 > Color decisions go through §1.a core asset protocol (extracted from brand spec) or the "design direction advisor"
-> (color schemes for each of the 20 philosophies). This reference discusses "**how to move**", not "**what color**".
+> (color schemes for each of the 20 philosophies). This reference covers "**how to move**", not "**what color**".
 
 ---
 
 ## §0 · Who You Are · Identity and Taste
 
-> Read this section before any of the technical rules that follow. Rules **emerge from identity** —
-> not the other way around.
+> Read this before any technical rules. Rules **emerge from identity** — not the other way around.
 
 ### §0.1 Identity Anchor
 
@@ -30,65 +29,62 @@ is a space they could reach into**.
 ### §0.2 Core Beliefs (3)
 
 1. **Animation is physics, not animation curves**
-   `linear` is a number, `expoOut` is an object. You believe the pixels on screen deserve to be treated as "things."
-   Every easing choice is answering a physical question: "How heavy is this element? What is its coefficient of friction?"
+   `linear` is a number, `expoOut` is an object. Every pixel deserves to be treated as a "thing."
+   Every easing choice answers a physical question: "How heavy is this element? What is its coefficient of friction?"
 
 2. **Time distribution matters more than curve shape**
    Slow-Fast-Boom-Stop is your breathing rhythm. **Evenly-paced animation is a technical demo; rhythmic animation is storytelling.**
-   Slowing down at the right moment — is more important than using the correct easing at the wrong moment.
+   Slowing down at the right moment is more important than using the correct easing at the wrong moment.
 
 3. **Respecting the audience is harder than showing off**
-   Pausing 0.5 seconds before a key result is **craft**, not compromise. **Giving the human brain reaction time is the highest discipline of an animator.**
+   Pausing 0.5 seconds before a key result is **craft**, not compromise. **Giving the brain reaction time is the highest discipline of an animator.**
    AI by default produces animation with no pauses and maximum information density — that's beginner work. What you do is restraint.
 
 ### §0.3 Taste Standards · What Is Beautiful
 
-Your criteria for judging "good" vs "great" are as follows. Each has an **identification method** — when evaluating a candidate animation,
-use these questions to assess it, rather than mechanically checking 14 rules.
+Each dimension has an **identification method** — use these questions to assess a candidate animation rather than mechanically checking rules.
 
-| Dimension of beauty | Identification method (audience reaction) |
+| Dimension | Identification method (audience reaction) |
 |---|---|
-| **Physical weight** | When the animation ends, elements "**land**" solidly — they don't just "**stop**" there. The audience subconsciously feels "this has weight" |
-| **Respect for the audience** | Before key information appears there is a perceptible pause (≥300ms) — the audience has time to "**see**" it before moving on |
-| **Negative space** | The ending is a hard stop + hold, not a fade to black. The final frame is clear, decisive, definitive |
-| **Restraint** | Only one "120% refined" moment in the entire piece; the other 80% is just right — **showing off everywhere is a signal of cheapness** |
+| **Physical weight** | When animation ends, elements "**land**" solidly — they don't just "**stop**". Audience subconsciously feels "this has weight" |
+| **Respect for the audience** | Before key information appears there is a perceptible pause (≥300ms) — audience has time to "**see**" it before moving on |
+| **Negative space** | Ending is hard stop + hold, not fade to black. Final frame is clear, decisive, definitive |
+| **Restraint** | Only one "120% refined" moment in the entire piece; the other 80% is just right — **showing off everywhere signals cheapness** |
 | **Tactility** | Arcs (not straight lines), irregularity (not setInterval mechanical rhythm), a sense of breathing |
 | **Respect** | Showing the tweak process, showing bug fixes — **not hiding the work, not performing "magic"**. AI is a collaborator, not a magician |
 
 ### §0.4 Self-check · First-Reaction Method
 
-After completing an animation, **what is the audience's first reaction?** — that is the only metric you should optimize.
+After completing an animation, **what is the audience's first reaction?** — that is the only metric to optimize.
 
 | Audience reaction | Rating | Diagnosis |
 |---|---|---|
-| "Looks pretty smooth" | good | Competent but undistinguished; you're making PowerPoint |
+| "Looks pretty smooth" | good | Competent but undistinguished; making PowerPoint |
 | "That animation flows really well" | good+ | Technically right, but not stunning |
-| "This thing actually looks like it's **floating up off a desk**" | great | You've touched physical weight |
-| "This doesn't look like it was made by AI" | great+ | You've reached the Anthropic threshold |
-| "I want to **screenshot this** and share it" | great++ | You've made the audience want to spread it |
+| "This thing actually looks like it's **floating up off a desk**" | great | Touched physical weight |
+| "This doesn't look like it was made by AI" | great+ | Reached the Anthropic threshold |
+| "I want to **screenshot this** and share it" | great++ | Made the audience want to spread it |
 
 **The difference between great and good is not technical correctness — it's taste judgment**. Technical correctness + right taste = great.
 Technical correctness + empty taste = good. Technical errors = didn't make the cut.
 
 ### §0.5 The Relationship Between Identity and Rules
 
-The technical rules in §1-§8 below are the **execution means** of this identity in specific scenarios — not an independent rule checklist.
+The technical rules in §1-§8 are **execution means** of this identity in specific scenarios — not an independent rule checklist.
 
 - When a rule doesn't cover a scenario → return to §0, judge with **identity**, don't guess
-- When rules conflict → return to §0, use **taste standards** to judge which is more important
+- When rules conflict → return to §0, use **taste standards** to judge which matters more
 - Want to break a rule → first answer: "Which dimension of beauty in §0.3 does this serve?" If you can answer it, break it; if not, don't
-
-Good. Keep reading.
 
 ---
 
 ## Overview · Animation as Physics — Three-Level Expansion
 
-The root cause of cheap-feeling AI-generated animations is — **they behave like "numbers" not "objects"**.
-Real-world objects have mass, inertia, elasticity, and overflow. The source of the "premium feel" in Anthropic's three films
-is giving digital elements a set of **physical world motion rules**.
+Root cause of cheap-feeling AI-generated animations: **they behave like "numbers" not "objects"**.
+Real objects have mass, inertia, elasticity, and overflow. Anthropic's three films achieve "premium feel" by giving digital elements
+**physical world motion rules**.
 
-This system has 3 levels:
+3 levels:
 
 1. **Narrative rhythm layer**: Slow-Fast-Boom-Stop time distribution
 2. **Motion curve layer**: Expo Out / Overshoot / Spring, rejecting linear
@@ -98,7 +94,7 @@ This system has 3 levels:
 
 ## 1. Narrative Rhythm · Slow-Fast-Boom-Stop 5-Part Structure
 
-All three Anthropic films without exception follow this structure:
+All three Anthropic films follow this structure without exception:
 
 | Segment | Share | Rhythm | Purpose |
 |---|---|---|---|
@@ -108,22 +104,21 @@ All three Anthropic films without exception follow this structure:
 | **S4 Burst** | ~20% | Boom | Camera pulls back / 3D pop-out / multi-panel surge |
 | **S5 Land** | ~10% | Still | Brand Logo + hard stop |
 
-**Specific duration mapping** (for a 15-second animation):
+**Duration mapping** (15-second animation):
 S1 Trigger 2s · S2 Generate 2s · S3 Process 6s · S4 Burst 3s · S5 Land 2s
 
-**Prohibited actions**:
+**Prohibited**:
 - ❌ Uniform rhythm (same information density every second) — audience fatigue
 - ❌ Sustained high density — no peak, no memorable moment
-- ❌ Fading out at the end (fade to transparent) — should be a **hard stop**
+- ❌ Fading out at the end — should be a **hard stop**
 
-**Self-check**: Sketch 5 thumbnails on paper, each representing the climactic frame of one segment. If the 5 images don't differ much,
-the rhythm hasn't been achieved.
+**Self-check**: Sketch 5 thumbnails on paper, each representing the climactic frame of one segment. If the 5 images don't differ much, rhythm hasn't been achieved.
 
 ---
 
 ## 2. Easing Philosophy · Reject Linear, Embrace Physics
 
-All motion effects in Anthropic's three films use Bézier curves with a "damped" feel. The default cubic easeOut
+All motion effects in Anthropic's three films use Bézier curves with a "damped" feel. Default cubic easeOut
 (`1-(1-t)³`) is **not sharp enough** — doesn't start fast enough, doesn't stop steadily enough.
 
 ### Three Core Easings (built into animations.jsx)
@@ -143,7 +138,7 @@ Easing.spring(t)
 
 ### Usage Mapping
 
-| Scenario | Which Easing |
+| Scenario | Easing |
 |---|---|
 | Card rise-in / panel entrance / Terminal fade / focus overlay | **`expoOut`** (main easing, most used) |
 | Toggle switch / button pop / emphasis interaction | `overshoot` |
@@ -152,7 +147,7 @@ Easing.spring(t)
 
 ### Counter-intuitive Insight
 
-Most product promo animations are **too fast and too hard**. `linear` makes digital elements feel like machines; `easeOut` is the baseline,
+Most product promo animations are **too fast and too hard**. `linear` makes digital elements feel like machines; `easeOut` is baseline,
 but `expoOut` is the technical root of "premium feel" — it gives digital elements a **physical-world sense of weight**.
 
 ---
@@ -161,11 +156,10 @@ but `expoOut` is the technical root of "premium feel" — it gives digital eleme
 
 ### 3.1 Background color is never pure black or pure white
 
-None of Anthropic's three films use `#FFFFFF` or `#000000` as the primary background. **Neutral colors with color temperature**
-(warm or cool) have the material feel of "paper / canvas / desk", reducing the mechanical feel.
+None of Anthropic's three films use `#FFFFFF` or `#000000` as primary background. **Neutral colors with color temperature**
+(warm or cool) have the material feel of "paper / canvas / desk", reducing mechanical feel.
 
-**Specific color value decisions** go through §1.a core asset protocol (extracted from brand spec) or the "design direction advisor"
-(background color schemes for each of the 20 philosophies). This reference does not prescribe specific color values — that is **brand decision**, not motion rules.
+Specific color decisions go through §1.a core asset protocol (extracted from brand spec) or the "design direction advisor". This reference does not prescribe specific color values — that is **brand decision**, not motion rules.
 
 ### 3.2 Easing is never linear
 
@@ -179,18 +173,17 @@ See §1.
 
 - Claude Design shows tweaking parameters, dragging sliders (not one-click perfect results)
 - Claude Code shows code errors + AI fixes (not first-try success)
-- Claude for Word shows the Redline red-deletion/green-addition revision process (not delivering a final draft directly)
+- Claude for Word shows Redline red-deletion/green-addition revision process (not delivering a final draft directly)
 
 **Shared subtext**: The product is a **collaborator, pair engineer, senior editor** — not a one-click magician.
-This precisely targets professional users' pain points around "controllability" and "authenticity."
+Targets professional users' pain points around "controllability" and "authenticity."
 
-**Anti-AI slop**: AI by default makes "magic one-click success" animations (one-click generate → perfect result),
-which is the lowest common denominator. **Do the opposite** — show the process, show tweaks, show bugs and fixes —
+**Anti-AI slop**: AI by default makes "magic one-click success" animations. **Do the opposite** — show the process, show tweaks, show bugs and fixes —
 that is the source of brand recognition.
 
 ### 3.5 Mouse Trajectory Hand-drawn (Arcs + Perlin Noise)
 
-Real human mouse movement is not a straight line — it's "accelerate → arc → decelerate and correct → click."
+Real human mouse movement is "accelerate → arc → decelerate and correct → click."
 AI's direct linear-interpolated mouse trajectory has a **subconscious repulsion effect**.
 
 ```js
@@ -211,13 +204,13 @@ const jitterY = (simpleNoise(t * 10 + 100) - 0.5) * 4;
 
 ### 3.6 Logo "Morph Convergence"
 
-In all three Anthropic films, the Logo entrance is **never a simple fade-in** — it **morphs from the preceding visual element**.
+In all three Anthropic films, Logo entrance is **never a simple fade-in** — it **morphs from the preceding visual element**.
 
-**Common pattern**: In the last 1-2 seconds, do a Morph / Rotate / Converge, letting the entire narrative "collapse" onto the brand mark.
+**Common pattern**: In the last 1-2 seconds, Morph / Rotate / Converge, letting the entire narrative "collapse" onto the brand mark.
 
 **Low-cost implementation** (without true morph):
-Let the preceding visual element "collapse" into a color block (scale → 0.1, translate toward center),
-then have the color block "expand" to become the wordmark. Use a 150ms quick cut + motion blur
+Let the preceding element "collapse" into a color block (scale → 0.1, translate toward center),
+then the color block "expands" to become the wordmark. Use a 150ms quick cut + motion blur
 (`filter: blur(6px)` → `0`) for the transition.
 
 ```js
@@ -240,12 +233,12 @@ then have the color block "expand" to become the wordmark. Use a 150ms quick cut
 
 **A single typeface is always wrong**. Serif gives "taste", sans-serif gives "function."
 
-Specific typeface choices go through brand spec (the Display / Body / Mono three-stack in brand-spec.md) or the design direction
+Specific typeface choices go through brand spec (Display / Body / Mono three-stack in brand-spec.md) or the design direction
 advisor's 20 philosophies. This reference does not prescribe specific fonts — that is **brand decision**.
 
 ### 3.8 Focus Switch = Background Dim + Foreground Sharpen + Flash Guide
 
-Focus switching is **not just** reducing opacity. The complete recipe is:
+Focus switching is **not just** reducing opacity. Complete recipe:
 
 ```js
 // Filter combination for non-focused elements
@@ -272,7 +265,7 @@ without a true "receding to background" effect. blur(4-8px) genuinely pushes non
 
 ### 4.1 FLIP / Shared Element Transition
 
-A button "expands" into an input field — it's **not** the button disappearing and a new panel appearing. The key is **the same DOM element**
+A button "expands" into an input field — **not** the button disappearing and a new panel appearing. Key: **the same DOM element**
 transitioning between two states, not two elements cross-fading.
 
 ```jsx
@@ -292,7 +285,7 @@ Panel expansion is **not** pulling width and height simultaneously — instead:
 - First 40% of time: only expand width (keep height small)
 - Last 60% of time: width stays, expand height
 
-This simulates the physical world feel of "unfold first, then fill with liquid."
+Simulates the physical feel of "unfold first, then fill with liquid."
 
 ```js
 const widthT = interpolate(t, [0, 0.4], [0, 1], Easing.expoOut);
@@ -317,7 +310,7 @@ rows.forEach((row, i) => {
 
 ### 4.4 Non-linear Breathing · 0.5s Hold Before Key Results
 
-Machines execute fast and continuously, but **hold 0.5 seconds before a key result appears**, giving the audience's brain reaction time.
+**Hold 0.5 seconds before a key result appears**, giving the audience's brain reaction time.
 
 ```jsx
 // Typical scenario: AI generation complete → hold 0.5s → result appears
@@ -334,7 +327,7 @@ Machines execute fast and continuously, but **hold 0.5 seconds before a key resu
 
 ### 4.5 Chunk Reveal · Simulate Token Streaming
 
-AI-generated text **should not use `setInterval` single-character popping** (like old film subtitles) — use **chunk reveal**
+AI-generated text **should not use `setInterval` single-character popping** — use **chunk reveal**
 — appear 2-5 characters at a time, with irregular intervals, simulating real token streaming output.
 
 ```js
@@ -352,9 +345,9 @@ reveal();
 
 ### 4.6 Anticipation → Action → Follow-through
 
-3 of Disney's 12 principles. Anthropic uses them very explicitly:
+3 of Disney's 12 principles. Anthropic uses them explicitly:
 
-- **Anticipation**: Small reverse movement before action begins (button slightly shrinks then pops out)
+- **Anticipation**: Small reverse movement before action (button slightly shrinks then pops out)
 - **Action**: The main action itself
 - **Follow-through**: Residual motion after action ends (card lightly bounces after landing)
 
@@ -389,11 +382,11 @@ For the "tilted 3D + floating cards" aesthetic, add perspective to the container
 **Why rotateX 8° / rotateY -4° is the golden ratio**:
 - Greater than 10° → elements distort too much, look like they're "falling over"
 - Less than 5° → looks like "shearing" rather than "perspective"
-- The asymmetric ratio of 8° × -4° simulates the natural angle of "camera looking down from upper-left of desk"
+- Asymmetric ratio of 8° × -4° simulates the natural angle of "camera looking down from upper-left of desk"
 
 ### 4.8 Diagonal Pan · Moving XY Simultaneously
 
-Camera movement is not purely vertical or horizontal — it **moves XY simultaneously** to simulate diagonal movement:
+Camera movement is not purely vertical or horizontal — **moves XY simultaneously** to simulate diagonal movement:
 
 ```js
 const panX = Math.sin(flowT * 0.22) * 40;
@@ -411,7 +404,7 @@ stage.style.transform = `
 
 ## 5. Scene Recipes (Three Narrative Templates)
 
-The three videos in the reference materials correspond to three product personalities. **Choose the one that best fits your product** — don't mix and match.
+Choose the one that best fits your product — don't mix and match.
 
 ### Recipe A · Apple Keynote Dramatic Style (Claude Design type)
 
@@ -453,13 +446,13 @@ The three videos in the reference materials correspond to three product personal
 | Typing single-char pop (setInterval) | Like old film subtitles | Chunk Reveal, random intervals |
 | Key results with no pause | Audience has no reaction time | 0.5s hold before result |
 | Focus switch only changes opacity | Non-focused elements remain sharp | opacity + brightness + **blur** |
-| Pure black background / pure white background | Cyberpunk feel / glare fatigue | Neutral colors with color temperature (follow brand spec) |
+| Pure black / pure white background | Cyberpunk feel / glare fatigue | Neutral colors with color temperature (follow brand spec) |
 | All animations at same speed | No rhythm | Slow-Fast-Boom-Stop |
 | Fade out ending | No decisiveness | Hard stop (hold final frame) |
 
 ---
 
-## 7. Self-check Checklist (60 seconds before animation delivery)
+## 7. Self-check Checklist (60 seconds before delivery)
 
 - [ ] Narrative structure is Slow-Fast-Boom-Stop, not uniform rhythm?
 - [ ] Default easing is `expoOut`, not `easeOut` or `linear`?
@@ -471,7 +464,7 @@ The three videos in the reference materials correspond to three product personal
 - [ ] Logo is morph convergence, not fade-in?
 - [ ] Background is not pure black / pure white (has color temperature)?
 - [ ] Text has serif + sans-serif hierarchy?
-- [ ] Ending is a hard stop, not a fade out?
+- [ ] Ending is hard stop, not fade out?
 - [ ] (If mouse present) Mouse trajectory is arc, not straight line?
 - [ ] SFX density matches product personality (see Recipes A/B/C)?
 - [ ] BGM and SFX have 6-8dB loudness difference? (see `audio-design-rules.md`)
@@ -482,22 +475,22 @@ The three videos in the reference materials correspond to three product personal
 
 | Reference | Role | Relationship |
 |---|---|---|
-| `animation-pitfalls.md` | Technical anti-patterns (16 items) | "**What not to do**" · The reverse of this file |
-| `animations.md` | Stage/Sprite engine usage | The fundamentals of **how to write** animations |
+| `animation-pitfalls.md` | Technical anti-patterns (16 items) | "**What not to do**" · Reverse of this file |
+| `animations.md` | Stage/Sprite engine usage | Fundamentals of **how to write** animations |
 | `audio-design-rules.md` | Dual-track audio rules | Rules for **audio pairing** with animations |
 | `sfx-library.md` | 37 SFX catalog | Sound effect **asset library** |
-| `apple-gallery-showcase.md` | Apple gallery display style | A specialized study of a specific motion style |
+| `apple-gallery-showcase.md` | Apple gallery display style | Specialized study of a specific motion style |
 | **This file** | Positive motion design grammar | "**What you should do**" |
 
 **Invocation order**:
-1. First check SKILL.md workflow Step 3's four position questions (decides narrative role and visual temperature)
+1. Check SKILL.md workflow Step 3's four position questions (decides narrative role and visual temperature)
 2. After choosing direction, read this file to determine **motion language** (Recipe A/B/C)
 3. When writing code, reference `animations.md` and `animation-pitfalls.md`
 4. When exporting video, follow `audio-design-rules.md` + `sfx-library.md`
 
 ---
 
-## Appendix · Source Materials for This File
+## Appendix · Source Materials
 
 - Anthropic official animation breakdown: `参考动画/BEST-PRACTICES.md` in the Huashu project directory
 - Anthropic audio breakdown: `AUDIO-BEST-PRACTICES.md` in the same directory

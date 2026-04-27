@@ -2,55 +2,51 @@
 
 **This is the single most important thing about this skill.**
 
-Good hi-fi design always grows from existing design context. **Building hi-fi from scratch is a last resort and will always produce generic work.** So at the start of every design task, ask first: is there anything to reference?
+Good hi-fi design grows from existing design context. **Building hi-fi from scratch is a last resort and produces generic work.** At the start of every task, ask: is there anything to reference?
 
 ## What Is Design Context
 
-In order of priority, highest to lowest:
+In order of priority:
 
 ### 1. The User's Design System / UI Kit
-The user's own product's existing component library, color tokens, typography rules, icon system. **The ideal situation.**
+The product's existing component library, color tokens, typography rules, icon system. **Ideal situation.**
 
 ### 2. The User's Codebase
-If the user provides a codebase, it contains live component implementations. Read those component files:
+If provided, read these files:
 - `theme.ts` / `colors.ts` / `tokens.css` / `_variables.scss`
 - Specific components (Button.tsx, Card.tsx)
 - Layout scaffold (App.tsx, MainLayout.tsx)
 - Global stylesheets
 
-**Read the code and copy exact values**: hex codes, spacing scale, font stack, border radius. Don't redraw from memory.
+**Copy exact values**: hex codes, spacing scale, font stack, border radius. Don't work from memory.
 
 ### 3. The User's Published Product
-If the user has a live product but no code, use Playwright or ask the user for screenshots.
+If no code available, use Playwright or ask for screenshots:
 
 ```bash
 # Screenshot a public URL with Playwright
 npx playwright screenshot https://example.com screenshot.png --viewport-size=1920,1080
 ```
 
-This lets you see the real visual vocabulary.
-
 ### 4. Brand Guidelines / Logo / Existing Assets
-The user may have: logo files, brand color specs, marketing materials, slide templates. All of these are context.
+Logo files, color specs, marketing materials, slide templates — all are context.
 
 ### 5. Competitor References
-The user says "something like XX website" — ask them to provide the URL or screenshots. **Do not** work from a vague impression in your training data.
+User says "something like XX website" — ask for URL or screenshots. **Do not** work from a vague training-data impression.
 
 ### 6. Known Design Systems (Fallback)
-If none of the above are available, use an established design system as a base:
+If none of the above are available:
 - Apple HIG
 - Material Design 3
 - Radix Colors (color palettes)
 - shadcn/ui (components)
 - Tailwind default palette
 
-Clearly tell the user what you're using, so they know it's a starting point, not a final draft.
+Tell the user what you're using so they know it's a starting point, not a final draft.
 
 ## Process for Obtaining Context
 
 ### Step 1: Ask the User
-
-Required questions at the start of the task (from `workflow.md`):
 
 ```markdown
 1. Do you have an existing design system / UI kit / component library? Where?
@@ -59,13 +55,11 @@ Required questions at the start of the task (from `workflow.md`):
 4. Is there a codebase I can read?
 ```
 
-### Step 2: When the User Says "No," Help Them Find Something
-
-Don't give up right away. Try:
+### Step 2: When User Says "No," Help Them Find Something
 
 ```markdown
 Let me see if there are any clues:
-- Do any of your previous projects have related design work?
+- Do any previous projects have related design work?
 - What colors / fonts does the company's marketing website use?
 - What style is your product's logo? Can you share one?
 - Are there any products you admire as a reference?
@@ -73,18 +67,16 @@ Let me see if there are any clues:
 
 ### Step 3: Read All Available Context
 
-If the user provides a codebase path, read:
+If a codebase path is provided:
 1. **List the file structure first**: find style / theme / component-related files
-2. **Read the theme / token files**: extract specific hex / px values
-3. **Read 2–3 representative components**: note the visual vocabulary (hover state, shadow, border, padding patterns)
+2. **Read theme / token files**: extract specific hex / px values
+3. **Read 2–3 representative components**: note visual vocabulary (hover state, shadow, border, padding)
 4. **Read the global stylesheet**: base resets, font loading
 5. **If there's a Figma link / screenshot**: look at it, but **trust the code more**
 
-**Important**: **Do not** glance at it and then work from memory. You need 30+ specific values to have truly lifted the context.
+**Do not** glance and work from memory. You need 30+ specific values to have truly lifted the context.
 
 ### Step 4: Vocalize the System You'll Use
-
-After reviewing the context, tell the user the system you'll use:
 
 ```markdown
 Based on your codebase and product screenshots, here's the design system I've distilled:
@@ -117,50 +109,41 @@ Based on your codebase and product screenshots, here's the design system I've di
 I'll start building with this system. Does that look right?
 ```
 
-Confirm with the user before starting.
+Confirm with user before starting.
 
 ## Designing Without Context (Fallback)
 
-**Strong warning**: Output quality will drop significantly in this case. Tell the user clearly.
+**Output quality drops significantly.** Tell the user clearly:
 
 ```markdown
 You have no design context, so I can only work from general intuition.
 The result will be "looks OK but lacks distinctiveness."
-Do you want to continue, or provide some reference materials first?
+Do you want to continue, or provide references first?
 ```
 
-If the user insists you proceed, make decisions in this order:
+If user insists, make decisions in this order:
 
 ### 1. Choose an Aesthetic Direction
-Don't deliver a generic result. Pick a clear direction:
-- brutally minimal
-- editorial/magazine
-- brutalist/raw
-- organic/natural
-- luxury/refined
-- playful/toy
-- retro-futuristic
-- soft/pastel
+Pick a clear direction — don't deliver generic:
+- brutally minimal / editorial / brutalist / organic / luxury / playful / retro-futuristic / soft pastel
 
 Tell the user which one you chose.
 
-### 2. Choose a Known Design System as the Skeleton
-- Use Radix Colors for color (https://www.radix-ui.com/colors)
-- Use shadcn/ui for component vocabulary (https://ui.shadcn.com)
-- Use Tailwind spacing scale (multiples of 4)
+### 2. Choose a Known Design System as Skeleton
+- Radix Colors for color (https://www.radix-ui.com/colors)
+- shadcn/ui for component vocabulary (https://ui.shadcn.com)
+- Tailwind spacing scale (multiples of 4)
 
 ### 3. Choose a Distinctive Font Pairing
 
-Don't use Inter/Roboto. Suggested combinations (free from Google Fonts):
+Don't use Inter/Roboto. Free from Google Fonts:
 - Instrument Serif + Geist Sans
 - Cormorant Garamond + Inter Tight
 - Bricolage Grotesque + Söhne (paid)
-- Fraunces + Work Sans (note: Fraunces is already overused by AI)
+- Fraunces + Work Sans (Fraunces is overused by AI)
 - JetBrains Mono + Geist Sans (technical feel)
 
 ### 4. Every Key Decision Has Reasoning
-
-Don't choose silently. Write in the HTML comments:
 
 ```html
 <!--
@@ -173,12 +156,10 @@ Design decisions:
 -->
 ```
 
-## Import Strategy (When the User Provides a Codebase)
-
-If the user says "import this codebase as reference":
+## Import Strategy (When User Provides a Codebase)
 
 ### Small (<50 files)
-Read everything, internalize the context.
+Read everything.
 
 ### Medium (50–500 files)
 Focus on:
@@ -187,27 +168,24 @@ Focus on:
 - 2–3 representative full-page components (Home.tsx, Dashboard.tsx)
 
 ### Large (>500 files)
-Ask the user to specify the focus:
-- "I'm building the settings page" → read existing settings-related files
-- "I'm building a new feature" → read the overall shell + closest reference
-- Don't try to read everything, be precise
+Ask user to specify focus:
+- "Building the settings page" → read existing settings-related files
+- "Building a new feature" → read the overall shell + closest reference
+- Don't try to read everything
 
 ## Working with Figma / Design Files
 
-If the user provides a Figma link:
-
-- **Do not** expect to directly "convert Figma to HTML" — that requires additional tools
+If user provides a Figma link:
+- **Do not** expect to directly "convert Figma to HTML" — requires additional tools
 - Figma links are usually not publicly accessible
-- Ask the user to: export as **screenshots** and send to you + tell you the specific color/spacing values
+- Ask user to: export as **screenshots** + tell you specific color/spacing values
 
-If only given a Figma screenshot, tell the user:
-- I can see the visual, but I can't extract precise values
-- For key numbers (hex, px), please tell me, or export as code (Figma supports this)
+If given only a Figma screenshot: I can see the visual but can't extract precise values — for key numbers (hex, px), provide them or export as code.
 
 ## One Final Reminder
 
-**The quality ceiling of a project's design is determined by the quality of the context you receive.**
+**The quality ceiling of a project's design is set by the quality of context you receive.**
 
-Spending 10 minutes collecting context is more valuable than spending 1 hour building hi-fi from scratch.
+10 minutes collecting context beats 1 hour building hi-fi from scratch.
 
-**When you have no context, prioritize asking the user for it rather than pushing ahead.**
+**When you have no context, ask for it rather than pushing ahead.**
