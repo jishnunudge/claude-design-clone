@@ -1,28 +1,28 @@
 # Editable PPTX Export: HTML Hard Constraints + Size Decisions + Common Errors
 
-This document covers the path of **using `scripts/html2pptx.js` + `pptxgenjs` to translate HTML element-by-element into true editable PowerPoint text boxes**, which is the only path supported by `export_deck_pptx.mjs`.
+Covers **using `scripts/html2pptx.js` + `pptxgenjs` to translate HTML element-by-element into true editable PowerPoint text boxes** — the only path supported by `export_deck_pptx.mjs`.
 
-> **Core prerequisite**: To take this path, HTML must follow the 4 constraints below from the very first line. **Not write first then convert** — retroactive fixes trigger 2-3 hours of rework (real trap from 2026-04-20 stock options private board project).
+> **Core prerequisite**: HTML must follow the 4 constraints below from the very first line. **Not write first then convert** — retroactive fixes trigger 2-3 hours of rework (real trap from 2026-04-20 stock options private board project).
 >
-> For scenarios where visual freedom is the priority (animations / web components / CSS gradients / complex SVG), switch to the PDF path (`export_deck_pdf.mjs` / `export_deck_stage_pdf.mjs`) instead — **don't** expect pptx export to achieve both visual fidelity and editability. This is a physical constraint of the PPTX file format itself (see "Why the 4 Constraints Are Not Bugs But Physical Constraints" at the end).
+> For visual-freedom-priority scenarios (animations / web components / CSS gradients / complex SVG), switch to the PDF path (`export_deck_pdf.mjs` / `export_deck_stage_pdf.mjs`) — **don't** expect pptx export to achieve both visual fidelity and editability. This is a physical constraint of the PPTX format itself (see "Why the 4 Constraints Are Not Bugs But Physical Constraints" at the end).
 
 ---
 
 ## Canvas Size: Use 960×540pt (LAYOUT_WIDE)
 
-PPTX units are **inches** (physical dimensions), not px. Decision principle: body's computedStyle dimensions must **match the presentation layout's inch dimensions** (±0.1", enforced by `html2pptx.js`'s `validateDimensions`).
+PPTX units are **inches** (physical dimensions), not px. body's computedStyle dimensions must **match the presentation layout's inch dimensions** (±0.1", enforced by `html2pptx.js`'s `validateDimensions`).
 
-### 3 Candidate Size Comparison
+### 3 Candidate Sizes
 
 | HTML body | Physical size | Corresponding PPT layout | When to use |
 |---|---|---|---|
 | **`960pt × 540pt`** | **13.333″ × 7.5″** | **pptxgenjs `LAYOUT_WIDE`** | ✅ **Default recommended** (modern PowerPoint 16:9 standard) |
 | `720pt × 405pt` | 10″ × 5.625″ | Custom | Only when user specifies "old PowerPoint Widescreen" template |
-| `1920px × 1080px` | 20″ × 11.25″ | Custom | ❌ Non-standard size, fonts appear abnormally small after projection |
+| `1920px × 1080px` | 20″ × 11.25″ | Custom | ❌ Non-standard, fonts appear abnormally small after projection |
 
-**Don't think of HTML size as resolution.** PPTX is a vector document — body size determines **physical dimensions**, not clarity. A large body (20″×11.25″) won't make text clearer — it only makes the pt font size small relative to the canvas, which looks worse when projected/printed.
+**Don't think of HTML size as resolution.** PPTX is a vector document — body size determines **physical dimensions**, not clarity. Large body (20″×11.25″) won't make text clearer — makes pt font size small relative to canvas, looks worse when projected/printed.
 
-### Three Equivalent body Writing Options
+### Three Equivalent body Options
 
 ```css
 body { width: 960pt;  height: 540pt; }    /* Clearest, recommended */
@@ -41,9 +41,9 @@ pptx.layout = 'LAYOUT_WIDE';  // 13.333 × 7.5 inch, no custom definition needed
 
 ## 4 Hard Constraints (Violation Causes Direct Error)
 
-`html2pptx.js` translates the HTML DOM element-by-element into PowerPoint objects. PowerPoint's format constraints projected onto HTML = the 4 rules below.
+`html2pptx.js` translates HTML DOM element-by-element into PowerPoint objects. PowerPoint's format constraints projected onto HTML = the 4 rules below.
 
-### Rule 1: No Text Directly in DIV — Must Use `<p>` or `<h1>`-`<h6>` to Wrap
+### Rule 1: No Text Directly in DIV — Must Use `<p>` or `<h1>`-`<h6>`
 
 ```html
 <!-- ❌ Wrong: text directly in div -->
@@ -54,7 +54,7 @@ pptx.layout = 'LAYOUT_WIDE';  // 13.333 × 7.5 inch, no custom definition needed
 <div class="body"><p>New users are the main driver</p></div>
 ```
 
-**Why**: PowerPoint text must exist in a text frame, which corresponds to HTML's paragraph-level elements (p/h*/li). Bare `<div>` has no corresponding text container in PPTX.
+**Why**: PowerPoint text must exist in a text frame, corresponding to HTML's paragraph-level elements (p/h*/li). Bare `<div>` has no corresponding text container in PPTX.
 
 **Also cannot use `<span>` to carry main text** — span is an inline element and cannot independently align as a text box. span can only be **nested inside p/h\*** for local styling (bold, color change).
 
@@ -67,14 +67,14 @@ background: linear-gradient(to right, #FF6B6B, #4ECDC4);
 /* ✅ Correct: solid color */
 background: #FF6B6B;
 
-/* ✅ If multi-color stripes are required, use flex children each with solid color */
+/* ✅ If multi-color stripes needed, use flex children each with solid color */
 .stripe-bar { display: flex; }
 .stripe-bar div { flex: 1; }
 .red   { background: #FF6B6B; }
 .teal  { background: #4ECDC4; }
 ```
 
-**Why**: PowerPoint's shape fill only supports solid/gradient-fill two types, but pptxgenjs's `fill: { color: ... }` only maps solid. Gradients in PowerPoint's native gradient format require different structure — the current toolchain doesn't support it.
+**Why**: PowerPoint's shape fill supports solid/gradient-fill, but pptxgenjs's `fill: { color: ... }` only maps solid. Native PowerPoint gradients require different structure — current toolchain doesn't support it.
 
 ### Rule 3: Background/Border/Shadow Only on DIV, Not on Text Tags
 
@@ -88,7 +88,7 @@ background: #FF6B6B;
 </div>
 ```
 
-**Why**: In PowerPoint, shape (rectangle/rounded rectangle) and text frame are two separate objects. HTML's `<p>` only translates to a text frame; background/border/shadow belong to the shape — they must be written on the **div that wraps the text**.
+**Why**: In PowerPoint, shape (rectangle/rounded rectangle) and text frame are two separate objects. HTML's `<p>` only translates to a text frame; background/border/shadow belong to the shape — must be written on the **div wrapping the text**.
 
 ### Rule 4: DIV Cannot Use `background-image` — Use `<img>` Tag
 
@@ -100,13 +100,13 @@ background: #FF6B6B;
 <img src="chart.png" style="position: absolute; left: 50%; top: 20%; width: 300pt; height: 200pt;" />
 ```
 
-**Why**: `html2pptx.js` only extracts image paths from `<img>` elements — it does not parse CSS `background-image` URLs.
+**Why**: `html2pptx.js` only extracts image paths from `<img>` elements — does not parse CSS `background-image` URLs.
 
 ---
 
 ## Path A HTML Template Skeleton
 
-Each slide is an independent HTML file with isolated scope (avoiding CSS pollution from single-file decks).
+Each slide is an independent HTML file with isolated scope (avoids CSS pollution from single-file decks).
 
 ```html
 <!DOCTYPE html>
@@ -175,7 +175,7 @@ Each slide is an independent HTML file with isolated scope (avoiding CSS polluti
 | `Background images on DIV elements are not supported` | div uses background-image | Change to `<img>` tag |
 | `HTML content overflows body by Xpt vertically` | Content exceeds 540pt | Reduce content or decrease font size, or use `overflow: hidden` to clip |
 | `HTML dimensions don't match presentation layout` | body size doesn't match presentation layout | Use `960pt × 540pt` for body with `LAYOUT_WIDE`; or defineLayout for custom size |
-| `Text box "XXX" ends too close to bottom edge` | Large `<p>` is less than 0.5 inch from body bottom edge | Move it up, leave adequate bottom margin; PPT itself will have some bottom covered |
+| `Text box "XXX" ends too close to bottom edge` | Large `<p>` less than 0.5 inch from body bottom edge | Move it up, leave adequate bottom margin |
 
 ---
 
@@ -221,48 +221,48 @@ const html2pptx = require('../scripts/html2pptx.js');  // this skill's script
 
 ---
 
-## This Path vs Other Options (When to Choose What)
+## This Path vs Other Options
 
 | Need | Choose |
 |------|------|
 | Colleagues will edit PPTX text / send to non-technical people for continued editing | **This path** (editable, requires HTML written per 4 constraints from the start) |
 | Just for presentation / archive, no more editing | `export_deck_pdf.mjs` (multi-file) or `export_deck_stage_pdf.mjs` (single-file deck-stage), output vector PDF |
-| Visual freedom is priority (animations, web components, CSS gradients, complex SVG), accepting non-editable | **PDF** (same as above) — PDF is both faithful and cross-platform, more appropriate than "image PPTX" |
+| Visual freedom priority (animations, web components, CSS gradients, complex SVG), accepting non-editable | **PDF** (same as above) — PDF is both faithful and cross-platform, more appropriate than "image PPTX" |
 
-**Never run html2pptx on a visually-free HTML and expect it to pass** — real testing shows visual-driven HTML has <30% pass rate; the remaining per-page fixes are slower than rewriting. This scenario should output PDF, not force PPTX.
+**Never run html2pptx on a visually-free HTML expecting it to pass** — real testing shows visual-driven HTML has <30% pass rate; per-page fixes are slower than rewriting. Output PDF instead.
 
 ---
 
 ## Fallback: Have Visual Draft But User Insists on Editable PPTX
 
-Occasionally you'll encounter this scenario: you/the user has already written a visually-driven HTML (gradients, web components, complex SVG all used), PDF would be most appropriate, but the user explicitly says "no, must be editable PPTX."
+Occasionally: you/user has already written visually-driven HTML (gradients, web components, complex SVG), PDF is most appropriate, but user explicitly says "must be editable PPTX."
 
-**Don't run `html2pptx` expecting it to pass** — real testing shows visual-driven HTML has <30% pass rate on html2pptx, the remaining 70% will error or look wrong. The correct fallback is:
+**Don't run `html2pptx` expecting it to pass** — real testing shows visual-driven HTML has <30% pass rate; the remaining 70% will error or look wrong. Correct fallback:
 
-### Step 1 · First Communicate the Limitations (Transparent Communication)
+### Step 1 · Communicate the Limitations (Transparent Communication)
 
 Tell the user three things in one sentence:
 
-> "Your current HTML uses [list specifically: gradients / web components / complex SVG / ...], which will fail to convert to editable PPTX directly. I have two options:
-> - A. **Output PDF** (recommended) — visual is 100% preserved, recipients can view and print but can't edit text
-> - B. **Rewrite an editable HTML based on your visual draft** (preserving design decisions on color/layout/copy, but reorganizing HTML structure per the 4 hard constraints, **sacrificing** visual capabilities like gradients, web components, complex SVG) → then export editable PPTX
+> "Your current HTML uses [list specifically: gradients / web components / complex SVG / ...], which will fail to convert to editable PPTX directly. Two options:
+> - A. **Output PDF** (recommended) — visual 100% preserved, recipients can view and print but can't edit text
+> - B. **Rewrite editable HTML based on your visual draft** (preserve design decisions on color/layout/copy, but reorganize HTML per the 4 hard constraints, **sacrificing** gradients, web components, complex SVG) → then export editable PPTX
 >
 > Which do you prefer?"
 
 Don't downplay option B — clearly state **what will be lost**. Let the user make the tradeoff.
 
-### Step 2 · If User Chooses B: AI Actively Rewrites, Don't Require the User to Write Themselves
+### Step 2 · If User Chooses B: AI Actively Rewrites
 
-The doctrine here is: **the user provides design intent; you're responsible for translating it into compliant implementation**. Not asking the user to learn the 4 hard constraints and rewrite themselves.
+Doctrine: **user provides design intent; you translate it into compliant implementation**. Don't ask user to learn the 4 hard constraints and rewrite themselves.
 
-Principles for rewriting:
+Rewrite principles:
 - **Preserve**: Color system (primary/secondary/neutral), information hierarchy (heading/subtitle/body/annotation), core copy, layout skeleton (top-middle-bottom / left-right columns / grid), page rhythm
-- **Downgrade**: CSS gradients → solid color or flex segments; web components → paragraph-level HTML; complex SVG → simplified `<img>` or solid geometric; shadows → deleted or reduced to very subtle; custom fonts → toward system fonts
-- **Rewrite**: Bare text → wrapped in `<p>` / `<h*>`; `background-image` → `<img>` tag; background/border on `<p>` → outer div carries it
+- **Downgrade**: CSS gradients → solid color or flex segments; web components → paragraph-level HTML; complex SVG → simplified `<img>` or solid geometric; shadows → deleted or very subtle; custom fonts → toward system fonts
+- **Rewrite**: Bare text → wrapped in `<p>` / `<h*>`; `background-image` → `<img>` tag; background/border on `<p>` → outer div
 
-### Step 3 · Produce a Comparison List (Transparent Delivery)
+### Step 3 · Produce Comparison List (Transparent Delivery)
 
-After rewriting, give the user a before/after comparison so they know which visual details were simplified:
+After rewriting, give user before/after comparison:
 
 ```
 Original design → editable version adjustments
@@ -275,23 +275,23 @@ Original design → editable version adjustments
 ### Step 4 · Export & Dual-format Delivery
 
 - `editable` HTML version → run `scripts/export_deck_pptx.mjs` for editable PPTX
-- **Recommend also keeping** original visual draft → run `scripts/export_deck_pdf.mjs` for high-fidelity PDF
-- Deliver both formats to user: high-fidelity PDF from visual draft + editable PPTX, each serving its purpose
+- **Also keep** original visual draft → run `scripts/export_deck_pdf.mjs` for high-fidelity PDF
+- Deliver both formats: high-fidelity PDF + editable PPTX, each serving its purpose
 
 ### When to Outright Decline Option B
 
-In certain scenarios rewriting is too costly — advise the user to abandon editable PPTX:
-- HTML's core value is animation or interaction (after rewriting only a static first frame remains — information loss >50%)
+In certain scenarios rewriting is too costly — advise user to abandon editable PPTX:
+- HTML's core value is animation or interaction (after rewriting only static first frame remains — information loss >50%)
 - Pages > 30, rewriting cost exceeds 2 hours
-- Visual design deeply depends on precise SVG / custom filters (after rewriting it's nearly unrelated to the original)
+- Visual design deeply depends on precise SVG / custom filters (after rewriting nearly unrelated to original)
 
-In these cases, tell the user: "This deck is too costly to rewrite. I recommend outputting PDF instead of PPTX. If recipients truly need pptx format, accept that the visuals will be significantly simplified — want to switch to PDF?"
+Tell the user: "This deck is too costly to rewrite. Recommend PDF instead of PPTX. If recipients truly need pptx format, accept that visuals will be significantly simplified — want to switch to PDF?"
 
 ---
 
 ## Why the 4 Constraints Are Not Bugs But Physical Constraints
 
-These 4 constraints are not the `html2pptx.js` author being lazy — they are the constraints of the **PowerPoint file format (OOXML) itself** projected onto HTML:
+These 4 constraints are not `html2pptx.js` author being lazy — they are constraints of the **PowerPoint file format (OOXML) itself** projected onto HTML:
 
 - PPTX text must be in a text frame (`<a:txBody>`), corresponding to HTML's paragraph-level elements
 - PPTX shape and text frame are two separate objects — cannot simultaneously have background drawn and text written on the same element
