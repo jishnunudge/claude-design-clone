@@ -1,17 +1,17 @@
 # Animation Pitfalls: Bugs Encountered in HTML Animation and How to Avoid Them
 
-The most common bugs when making animations and how to avoid them. Every rule comes from a real failure case.
+Most common bugs when making animations and how to avoid them. Every rule comes from a real failure case.
 
 Read through this before writing an animation — it can save you a full iteration cycle.
 
 ## 1. Layered Layout — `position: relative` is a Default Obligation
 
-**The trap**: A sentence-wrap element wraps 3 bracket-layer elements (`position: absolute`). Without setting `position: relative` on sentence-wrap, the absolute bracket uses `.canvas` as its coordinate system and floats 200px off the bottom of the screen.
+**The trap**: A sentence-wrap element wraps 3 bracket-layer elements (`position: absolute`). Without `position: relative` on sentence-wrap, the absolute bracket uses `.canvas` as its coordinate system and floats 200px off the bottom of the screen.
 
 **Rules**:
-- Any container that holds `position: absolute` child elements **must** explicitly have `position: relative`
-- Even if there's no visual "offset" needed, write `position: relative` as a coordinate system anchor
-- If you're writing `.parent { ... }` and its children include `.child { position: absolute }`, instinctively add relative to the parent
+- Any container holding `position: absolute` children **must** explicitly have `position: relative`
+- Even without visual "offset" needed, write `position: relative` as a coordinate system anchor
+- If writing `.parent { ... }` and its children include `.child { position: absolute }`, instinctively add relative to the parent
 
 **Quick check**: Every time `position: absolute` appears, count up through ancestors to ensure the nearest positioned ancestor is the coordinate system *you want*.
 
@@ -20,7 +20,7 @@ Read through this before writing an animation — it can save you a full iterati
 **The trap**: Wanted to use `␣` (U+2423 OPEN BOX) to visualize "space token." Noto Serif SC / Cormorant Garamond don't have this glyph, rendering as blank/tofu — audience sees nothing.
 
 **Rules**:
-- **Every character appearing in an animation must exist in your chosen font**
+- **Every character in an animation must exist in your chosen font**
 - Common rare character blacklist: `␣ ␀ ␐ ␋ ␨ ↩ ⏎ ⌘ ⌥ ⌃ ⇧ ␦ ␖ ␛`
 - To express meta-characters like "space / return / tab", use **CSS-constructed semantic boxes**:
   ```html
@@ -38,14 +38,14 @@ Read through this before writing an animation — it can save you a full iterati
     text-transform: uppercase;
   }
   ```
-- Emoji must also be validated: some emoji in fonts other than Noto Emoji will fall back to gray boxes. Best to use `emoji` font-family or SVG
+- Emoji must also be validated: some emoji in fonts other than Noto Emoji will fall back to gray boxes. Use `emoji` font-family or SVG
 
 ## 3. Data-driven Grid/Flex Templates
 
-**The trap**: Code has `const N = 6` tokens, but CSS hardcodes `grid-template-columns: 80px repeat(5, 1fr)`. The 6th token has no column — the entire matrix is misaligned.
+**The trap**: Code has `const N = 6` tokens, but CSS hardcodes `grid-template-columns: 80px repeat(5, 1fr)`. The 6th token has no column — entire matrix is misaligned.
 
 **Rules**:
-- When count comes from a JS array (`TOKENS.length`), the CSS template should also be data-driven
+- When count comes from a JS array (`TOKENS.length`), CSS template should also be data-driven
 - Option A: Inject via CSS variable from JS
   ```js
   el.style.setProperty('--cols', N);
@@ -58,10 +58,10 @@ Read through this before writing an animation — it can save you a full iterati
 
 ## 4. Transition Discontinuity — Scene Switches Must Be Continuous
 
-**The trap**: zoom1 (13-19s) → zoom2 (19.2-23s). The main sentence is already hidden, zoom1 fade out (0.6s) + zoom2 fade in (0.6s) + stagger delay (0.2s+) = approximately 1 second of pure blank screen. Audience thinks the animation froze.
+**The trap**: zoom1 (13-19s) → zoom2 (19.2-23s). Main sentence already hidden, zoom1 fade out (0.6s) + zoom2 fade in (0.6s) + stagger delay (0.2s+) = approximately 1 second of pure blank screen. Audience thinks the animation froze.
 
 **Rules**:
-- When switching scenes consecutively, fade out and fade in must **cross-overlap**, not wait for the previous to fully disappear before starting the next
+- When switching scenes consecutively, fade out and fade in must **cross-overlap**, not wait for previous to fully disappear before starting next
   ```js
   // Bad:
   if (t >= 19) hideZoom('zoom1');      // 19.0s out
@@ -72,7 +72,7 @@ Read through this before writing an animation — it can save you a full iterati
   if (t >= 18.6) showZoom('zoom2');    // fade in simultaneously (cross-fade)
   ```
 - Or use an "anchor element" (e.g., the main sentence) as a visual link between scenes — it briefly reappears during the zoom switch
-- Carefully calculate CSS transition duration to avoid the next transition being triggered before the current one finishes
+- Carefully calculate CSS transition duration to avoid next transition triggering before current one finishes
 
 ## 5. Pure Render Principle — Animation State Should Be Seekable
 
@@ -97,7 +97,7 @@ Read through this before writing an animation — it can save you a full iterati
 **The trap**: On DOMContentLoaded, immediately calling `charRect(idx)` to measure bracket positions. Fonts haven't loaded yet, each character width is the fallback font width, positions are all wrong. Once fonts load (~500ms later), the bracket's `left: Xpx` still holds the old value — permanently offset.
 
 **Rules**:
-- Any layout code that depends on DOM measurement (`getBoundingClientRect`, `offsetWidth`) **must** be wrapped in `document.fonts.ready.then()`
+- Any layout code depending on DOM measurement (`getBoundingClientRect`, `offsetWidth`) **must** be wrapped in `document.fonts.ready.then()`
   ```js
   document.fonts.ready.then(() => {
     requestAnimationFrame(() => {
@@ -106,16 +106,16 @@ Read through this before writing an animation — it can save you a full iterati
     });
   });
   ```
-- The extra `requestAnimationFrame` gives the browser one frame to commit layout
+- Extra `requestAnimationFrame` gives the browser one frame to commit layout
 - If using Google Fonts CDN, `<link rel="preconnect">` speeds up first load
 
 ## 7. Recording Preparation — Prepare Handles for Video Export
 
-**The trap**: Playwright `recordVideo` defaults to 25fps, starts recording from context creation. The first 2 seconds of page loading and font loading get recorded. The delivered video has 2 seconds of blank/white flash at the start.
+**The trap**: Playwright `recordVideo` defaults to 25fps, starts recording from context creation. The first 2 seconds of page loading and font loading get recorded. Delivered video has 2 seconds of blank/white flash at the start.
 
 **Rules**:
 - Provide `render-video.js` tooling to handle: warmup navigate → reload to restart animation → wait for duration → ffmpeg trim head + convert to H.264 MP4
-- The **frame 0** of the animation must be the complete initial state with layout already in place (not blank or loading)
+- **Frame 0** of the animation must be the complete initial state with layout already in place (not blank or loading)
 - Want 60fps? Use ffmpeg `minterpolate` post-processing — don't rely on browser source frame rate
 - Want GIF? Two-stage palette (`palettegen` + `paletteuse`), can compress a 30s 1080p animation to 3MB
 
@@ -126,12 +126,12 @@ See `video-export.md` for complete script invocation.
 **The trap**: Using `render-video.js` with 3 processes recording 3 HTMLs in parallel. Because TMP_DIR is only named with `Date.now()`, 3 processes starting at the same millisecond share the same tmp directory. The first process to finish cleans up tmp, the other two get `ENOENT` when reading the directory — all crash.
 
 **Rules**:
-- Any temporary directories that multiple processes may share must include **PID or random suffix** in the name:
+- Any temporary directories multiple processes may share must include **PID or random suffix** in the name:
   ```js
   const TMP_DIR = path.join(DIR, '.video-tmp-' + Date.now() + '-' + process.pid);
   ```
 - If you actually want parallel multi-file processing, use shell's `&` + `wait` rather than forking within a single node script
-- When batch-recording multiple HTMLs, the conservative approach: run **serially** (2 can run in parallel, 3+ should queue up)
+- When batch-recording multiple HTMLs, conservative approach: run **serially** (2 can run in parallel, 3+ should queue up)
 
 ## 9. Progress Bar / Replay Button in Recording — Chrome Elements Polluting the Video
 
@@ -177,23 +177,23 @@ See `video-export.md` for complete script invocation.
 
 ## 11. Don't Draw "Fake Chrome" On-screen — Decorative Player UI Conflicts with Real Chrome
 
-**The trap**: The animation uses a `Stage` component that already comes with scrubber + timecode + pause button (these belong to `.no-record` chrome and are automatically hidden on export). I then drew a "magazine page number style decorative progress bar" at the bottom reading "`00:60 ──── CLAUDE-DESIGN / ANATOMY`", feeling good about it. **Result**: Users see two progress bars — one is the Stage controller, one is the decorative one I drew. Visually they completely clash — deemed a bug. "Why is there a progress bar inside the video?"
+**The trap**: The animation uses a `Stage` component that already comes with scrubber + timecode + pause button (these belong to `.no-record` chrome and are automatically hidden on export). I then drew a "magazine page number style decorative progress bar" at the bottom reading "`00:60 ──── CLAUDE-DESIGN / ANATOMY`". **Result**: Users see two progress bars — one is the Stage controller, one is the decorative one. Visually they completely clash — deemed a bug.
 
 **Rules**:
 
 - Stage already provides: scrubber + timecode + pause/replay buttons. **Do not draw** additional progress indicators, current timecode, copyright attribution bars, or chapter counters inside the canvas — they either conflict with chrome, or are filler slop (violating the "earn its place" principle).
 - "Page number feel," "magazine feel," "bottom attribution bar" — these **decorative desires** are high-frequency fillers automatically added by AI. Every occurrence warrants vigilance — does it genuinely convey irreplaceable information? Or is it just filling blank space?
-- If you firmly believe a certain bottom strip must exist (e.g., the animation's theme is literally about player UI), then it must be **narratively necessary** and **visually distinct from the Stage scrubber** (different position, different form, different tone).
+- If you firmly believe a certain bottom strip must exist (e.g., the animation's theme is literally about player UI), it must be **narratively necessary** and **visually distinct from the Stage scrubber** (different position, different form, different tone).
 
-**Element attribution test** (every element drawn into the canvas must be able to answer):
+**Element attribution test** (every element drawn into the canvas must answer):
 
 | What it belongs to | Treatment |
 |------------|------|
 | Narrative content of a specific scene | OK, keep it |
 | Global chrome (for control/debugging) | Add `.no-record` class, hide on export |
-| **Belongs to neither any scene nor chrome** | **Delete.** This is an ownerless element — it's inevitably filler slop |
+| **Belongs to neither any scene nor chrome** | **Delete.** Ownerless element — inevitably filler slop |
 
-**Self-check (3 seconds before delivery)**: Take a static screenshot and ask yourself —
+**Self-check (3 seconds before delivery)**:
 
 - Is there anything in the frame that "looks like video player UI" (horizontal progress bar, timecode, control button shapes)?
 - If so, does removing it damage the narrative? If not damaged, delete.
@@ -205,7 +205,7 @@ See `video-export.md` for complete script invocation.
 
 **Trap (A · blank prefix)**: A 60-second animation exported as MP4 has 2-3 seconds of blank screen at the beginning. `ffmpeg --trim=0.3` can't clip it away.
 
-**Trap (B · start offset, real incident 2026-04-20)**: Exporting a 24-second video, user perception is "video doesn't start playing until 19 seconds." The animation actually started recording from t=5, recorded to t=24 then looped back to t=0, then recorded 5 more seconds to end — so the last 5 seconds of the video are the true beginning of the animation.
+**Trap (B · start offset, real incident 2026-04-20)**: Exporting a 24-second video, user perception is "video doesn't start playing until 19 seconds." The animation actually started recording from t=5, recorded to t=24 then looped back to t=0, then recorded 5 more seconds to end — so the last 5 seconds of the video are the true beginning.
 
 **Root cause** (shared by both traps):
 
@@ -269,12 +269,12 @@ window.__seek = (t) => { fired.clear(); time = t; lastTick = null; render(t); };
 | `playing = false` default | During font loading, even if `tick` runs, time doesn't advance — avoids rendering offset |
 | `__ready` set in tick's first frame | Recording script starts timing from this moment, corresponding frame is animation's true t=0 |
 | Only start tick inside `document.fonts.ready.then(...)` | Avoids fallback font width measurements, avoids first-frame font jump |
-| `window.__seek` exists | Allows `render-video.js` to actively correct — the second line of defense |
+| `window.__seek` exists | Allows `render-video.js` to actively correct — second line of defense |
 
 **Corresponding defenses on the recording script side**:
 1. `addInitScript` injects `window.__recording = true` (before page goto)
 2. `waitForFunction(() => window.__ready === true)`, record this moment's offset as ffmpeg trim
-3. **Additionally**: After `__ready`, actively `page.evaluate(() => window.__seek && window.__seek(0))`, forcibly zeroing any time offset the HTML may have — this is the second line of defense, for dealing with HTML that doesn't strictly follow the starter template
+3. **Additionally**: After `__ready`, actively `page.evaluate(() => window.__seek && window.__seek(0))`, forcibly zeroing any time offset the HTML may have — second line of defense, for dealing with HTML that doesn't strictly follow the starter template
 
 **Verification method**: After exporting MP4
 ```bash
@@ -289,7 +289,7 @@ First frame must be animation t=0 initial state (not mid-animation, not black); 
 
 **The trap**: Animation Stage defaults to `loop=true` (convenient for browser viewing). `render-video.js` waits an extra 300ms buffer after recording duration before stopping. During this 300ms, Stage enters the next loop cycle. ffmpeg `-t DURATION` clips at that point, and the last 0.5-1s falls into the next loop — the video ending suddenly jumps back to the first frame (Scene 1), audience thinks the video has a bug.
 
-**Root cause**: No "I'm recording" handshake protocol between the recording script and HTML. HTML doesn't know it's being recorded and continues to loop as in a browser interaction scenario.
+**Root cause**: No "I'm recording" handshake protocol between the recording script and HTML. HTML doesn't know it's being recorded and continues to loop.
 
 **Rules**:
 
@@ -306,7 +306,7 @@ First frame must be animation t=0 initial state (not mid-animation, not black); 
    //                                                       ↑ keep 0.001 to prevent Sprite end=duration from being closed
    ```
 
-3. **Ending Sprite's fadeOut**: Should be set to `fadeOut={0}` in recording mode, otherwise the video end will fade to transparent/dark — users expect to stop on a clear final frame, not a fade out. For hand-written HTML, it's recommended that ending Sprites always use `fadeOut={0}`.
+3. **Ending Sprite's fadeOut**: Should be set to `fadeOut={0}` in recording mode, otherwise the video end will fade to transparent/dark. For hand-written HTML, it's recommended that ending Sprites always use `fadeOut={0}`.
 
 **Reference implementation**: Stage in `assets/animations.jsx` and `scripts/render-video.js` both have the handshake built in. Hand-written Stage must implement `__recording` detection — otherwise recording will always hit this trap.
 
@@ -316,7 +316,7 @@ First frame must be animation t=0 initial state (not mid-animation, not black); 
 
 **The trap**: `convert-formats.sh` using `minterpolate=fps=60:mi_mode=mci...` generates 60fps MP4 that cannot be opened in macOS QuickTime / some Safari versions (black screen or outright rejected). VLC / Chrome can open it.
 
-**Root cause**: The H.264 elementary stream output by minterpolate contains SEI / SPS fields that some players have trouble parsing.
+**Root cause**: H.264 elementary stream output by minterpolate contains SEI / SPS fields that some players have trouble parsing.
 
 **Rules**:
 

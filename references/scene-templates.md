@@ -1,6 +1,6 @@
 # Scene Template Library: Organized by Output Type
 
-> Use in combination with the "Prompt DNA" from design-styles.md.
+> Use in combination with "Prompt DNA" from design-styles.md.
 > Formula: `[Style Prompt DNA] + [Scene Template] + [Specific content description]`
 
 ---
@@ -8,14 +8,14 @@
 ## 1. WeChat Official Account Cover / Article Header Image
 
 **Specs**:
-- Cover image: 2.35:1 (900×383px or 1200×510px)
+- Cover: 2.35:1 (900×383px or 1200×510px)
 - In-article illustration: 16:9 (1200×675px) or 4:3 (1200×900px)
 
 **Key design requirements**:
-- Visual impact first (users scan quickly in the feed)
-- Minimal or no text (the WeChat title overlays on top)
+- Visual impact first (users scan quickly in feed)
+- Minimal or no text (WeChat title overlays on top)
 - Moderate color saturation (WeChat reading environment is predominantly white)
-- Avoid excessive detail (must still be recognizable as a thumbnail)
+- Avoid excessive detail (must be recognizable as thumbnail)
 
 **Recommended styles**: 01 Pentagram / 11 Build / 12 Sagmeister / 18 Kenya Hara / 07 Field.io
 
@@ -36,16 +36,16 @@
 
 **Specs**:
 - 16:9 (1200×675px) — most versatile
-- 1:1 (800×800px) — suitable for emphasis
-- 4:3 (1200×900px) — suitable for information-dense content
+- 1:1 (800×800px) — emphasis
+- 4:3 (1200×900px) — information-dense content
 
 **Key design requirements**:
-- Serves the article's argument, not mere decoration
+- Serves the article's argument, not decoration
 - Creates visual rhythm with surrounding context
-- Expresses a single core concept concisely
+- Expresses a single core concept
 - AI generation preferred; HTML screenshot only for precise data tables
 
-**Recommended styles**: Choose based on the article's tone; commonly used: 01 / 04 / 10 / 17 / 18
+**Recommended styles**: Choose based on article tone; commonly: 01 / 04 / 10 / 17 / 18
 
 **Scene prompt template**:
 ```
@@ -69,8 +69,8 @@
 **Key design requirements**:
 - Clear information hierarchy (title → key data → details)
 - Data must be accurate — no fabrication
-- Visual flow guides (the reader's eye path)
-- Use icons / charts appropriately to aid comprehension
+- Visual flow guides reader's eye path
+- Icons / charts used appropriately to aid comprehension
 
 **Recommended styles**: 04 Fathom / 10 Müller-Brockmann / 02 Stamen / 17 Takram
 
@@ -122,12 +122,12 @@
 - Letter portrait (216×279mm / 612×792pt)
 
 **Key design requirements**:
-- Optimized for long-form reading (66 characters per line, line height 1.5-1.8)
+- Optimized for long-form reading (66 chars/line, line height 1.5-1.8)
 - Clear chapter navigation system
 - Consistent header / footer / page number design
 - Elegant coexistence of charts and body text
 - Citation / footnote system
-- Polished cover page design
+- Polished cover page
 
 **Recommended styles**: 10 Müller-Brockmann / 04 Fathom / 03 Information Architects / 17 Takram / 19 Irma Boom
 
@@ -148,12 +148,12 @@
 ## 6. Landing Page / Product Website
 
 **Specs**:
-- Desktop: 1440px width design (responsive down to 320px)
+- Desktop: 1440px width (responsive down to 320px)
 - Above-the-fold height: 100vh
 
 **Key design requirements**:
-- Communicate core value within 5 seconds of the first screen
-- Clear CTA (call-to-action button)
+- Communicate core value within 5 seconds of first screen
+- Clear CTA
 - Scroll narrative structure (problem → solution → proof → action)
 - Mobile adaptation
 - Load speed
@@ -183,8 +183,8 @@
 **Key design requirements**:
 - Touch-friendly (minimum tap target 44×44pt)
 - Consistency with system design language
-- Standard handling of status bar / navigation bar / tab bar
-- Moderate information density (mobile should not be too dense)
+- Standard status bar / navigation bar / tab bar handling
+- Moderate information density (mobile should not be dense)
 
 **Recommended styles**: 17 Takram / 11 Build / 03 Information Architects / 01 Pentagram
 
@@ -206,11 +206,11 @@
 **Specs**:
 - Vertical: 3:4 (1080×1440px) — optimal
 - Square: 1:1 (1080×1080px)
-- The first image determines click-through rate
+- First image determines click-through rate
 
 **Key design requirements**:
-- Visual appeal first (competing in the waterfall feed)
-- Can include a small amount of text (but no more than 20% of the frame)
+- Visual appeal first (competing in waterfall feed)
+- Small amount of text OK (no more than 20% of frame)
 - Vibrant colors that aren't gaudy
 - Lifestyle feel / texture / atmosphere
 
@@ -231,10 +231,10 @@
 
 ## Combination Example
 
-**Scenario**: WeChat Official Account cover, introducing an AI coding tool — professional but with warmth
+**Scenario**: WeChat Official Account cover, introducing an AI coding tool — professional but warm
 
-**Step 1**: Choose a style → 17 Takram (professional + warmth)
-**Step 2**: Take the Takram prompt DNA + WeChat cover scene template
+**Step 1**: Choose style → 17 Takram (professional + warmth)
+**Step 2**: Combine Takram prompt DNA + WeChat cover scene template
 
 ```
 Takram Japanese speculative design:

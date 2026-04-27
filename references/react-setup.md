@@ -1,10 +1,10 @@
 # React + Babel Project Standards
 
-Technical standards that must be followed when prototyping with HTML + React + Babel. Violating these will break things.
+Technical standards for prototyping with HTML + React + Babel. Violating these will break things.
 
 ## Pinned Script Tags (use these exact versions)
 
-Place these three script tags in the `<head>` of your HTML, using **fixed versions + integrity hashes**:
+Place these three script tags in `<head>`, using **fixed versions + integrity hashes**:
 
 ```html
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -12,9 +12,9 @@ Place these three script tags in the `<head>` of your HTML, using **fixed versio
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 ```
 
-**Do not** use unpinned versions like `react@18` or `react@latest` — they cause version drift / caching issues.
+**Do not** use unpinned versions like `react@18` or `react@latest` — causes version drift / caching issues.
 
-**Do not** omit `integrity` — if a CDN is hijacked or tampered with, this is your last line of defense.
+**Do not** omit `integrity` — last line of defense if CDN is hijacked or tampered with.
 
 ## File Structure
 
@@ -45,13 +45,13 @@ Loading order in HTML:
 </script>
 ```
 
-**Do not** use `type="module"` — it conflicts with Babel.
+**Do not** use `type="module"` — conflicts with Babel.
 
 ## Three Non-Negotiable Rules
 
 ### Rule 1: styles objects must use unique names
 
-**Wrong** (will definitely break with multiple components):
+**Wrong** (breaks with multiple components):
 ```jsx
 // components.jsx
 const styles = { button: {...}, card: {...} };
@@ -60,7 +60,7 @@ const styles = { button: {...}, card: {...} };
 const styles = { container: {...}, header: {...} };
 ```
 
-**Correct**: use a unique prefix for each component file's styles.
+**Correct**: use unique prefix per component file.
 
 ```jsx
 // terminal.jsx
@@ -81,13 +81,13 @@ const sidebarStyles = {
 <div style={{ padding: 16, background: '#111' }}>...</div>
 ```
 
-This rule is **non-negotiable**. Every time you write `const styles = {...}`, you must rename it to something specific — otherwise you'll get full-stack errors when multiple components are loaded.
+**Non-negotiable**. Every `const styles = {...}` must be renamed to something specific — otherwise full-stack errors when multiple components are loaded.
 
 ### Rule 2: Scope is not shared — manual export required
 
-**Key concept**: Each `<script type="text/babel">` is compiled independently by Babel; their **scopes do not communicate**. A `Terminal` component defined in `components.jsx` is **undefined by default** in `pages.jsx`.
+**Key concept**: Each `<script type="text/babel">` is compiled independently by Babel; **scopes do not communicate**. `Terminal` defined in `components.jsx` is **undefined by default** in `pages.jsx`.
 
-**Solution**: At the end of each component file, export the components / utilities you want to share onto `window`:
+**Solution**: At end of each component file, export onto `window`:
 
 ```jsx
 // end of components.jsx
@@ -101,11 +101,11 @@ Object.assign(window, {
 });
 ```
 
-Then `pages.jsx` can use `<Terminal />` directly, because JSX will look for `window.Terminal`.
+`pages.jsx` can then use `<Terminal />` directly — JSX looks for `window.Terminal`.
 
 ### Rule 3: Do not use scrollIntoView
 
-`scrollIntoView` pushes the entire HTML container upward, breaking the layout of the web harness. **Never use it**.
+`scrollIntoView` pushes the entire HTML container upward, breaking the web harness layout. **Never use it**.
 
 Alternatives:
 ```js
@@ -121,13 +121,13 @@ container.scrollTo({
 
 ## Calling the Claude API (inside HTML)
 
-Some native design-agent environments (like Claude.ai Artifacts) provide `window.claude.complete` with no configuration required, but most agent environments (Claude Code / Codex / Cursor / Trae / etc.) **do not** have this locally.
+Some native design-agent environments (like Claude.ai Artifacts) provide `window.claude.complete` with no config required, but most agent environments (Claude Code / Codex / Cursor / Trae / etc.) **do not** have this locally.
 
-If your HTML prototype needs to call an LLM for a demo (e.g., building a chat interface), two options:
+If your HTML prototype needs to call an LLM for a demo, three options:
 
 ### Option A: Don't make real calls — use a mock
 
-Recommended for demo scenarios. Write a fake helper that returns preset responses:
+Recommended for demos. Fake helper returning preset responses:
 ```jsx
 window.claude = {
   async complete(prompt) {
@@ -139,7 +139,7 @@ window.claude = {
 
 ### Option B: Call the Anthropic API for real
 
-Requires an API key; the user must enter their own key in the HTML to run it. **Never hard-code a key in HTML**.
+Requires an API key; user must enter their own. **Never hard-code a key in HTML**.
 
 ```html
 <input id="api-key" placeholder="Paste your Anthropic API key" />
@@ -167,15 +167,13 @@ window.claude = {
 </script>
 ```
 
-**Note**: Calling the Anthropic API directly from the browser will hit CORS issues. If the user's preview environment doesn't support CORS bypass, this route won't work. In that case, use Option A mock, or tell the user they need a proxy backend.
+**Note**: Direct browser calls to the Anthropic API will hit CORS issues. If preview environment doesn't support CORS bypass, use Option A, or tell the user they need a proxy backend.
 
-### Option C: Use the agent's LLM capability to generate mock data
+### Option C: Use agent's LLM to pre-generate mock data
 
-For local demos only: within the current agent session, temporarily use the agent's LLM capability (or a multi-model skill the user has installed) to pre-generate mock response data, then hard-code it into the HTML. This way the HTML at runtime has zero dependency on any API.
+For local demos only: within current agent session, use agent's LLM capability to pre-generate mock response data, then hard-code into HTML. Runtime has zero API dependency.
 
 ## Typical HTML Starter Template
-
-Copy this template as the skeleton for React prototypes:
 
 ```html
 <!DOCTYPE html>
@@ -229,23 +227,23 @@ Copy this template as the skeleton for React prototypes:
 ## Common Errors and Fixes
 
 **`styles is not defined` or `Cannot read property 'button' of undefined`**
-→ You defined `const styles` in one file, and another file overwrote it. Give each one a specific name.
+→ `const styles` defined in one file, overwritten by another. Give each a specific name.
 
 **`Terminal is not defined`**
-→ Scope doesn't cross files. Add `Object.assign(window, {Terminal})` at the end of the file where Terminal is defined.
+→ Scope doesn't cross files. Add `Object.assign(window, {Terminal})` at end of the defining file.
 
-**Entire page is white, no errors in the console**
-→ Most likely a JSX syntax error that Babel didn't report to the console. Temporarily swap `babel.min.js` for the unminified `babel.js` — error messages will be clearer.
+**Entire page is white, no errors in console**
+→ Likely a JSX syntax error Babel didn't report. Swap `babel.min.js` for unminified `babel.js` — clearer error messages.
 
 **ReactDOM.createRoot is not a function**
-→ Wrong version. Confirm you're using react-dom@18.3.1 (not 17 or anything else).
+→ Wrong version. Confirm react-dom@18.3.1 (not 17 or anything else).
 
 **`Objects are not valid as a React child`**
-→ You rendered an object instead of JSX / a string. Usually `{someObj}` when you meant `{someObj.name}`.
+→ Rendered an object instead of JSX / string. Usually `{someObj}` when you meant `{someObj.name}`.
 
 ## How to Split Large Projects into Files
 
-**Single files over 1000 lines** are hard to maintain. Here's a split structure:
+**Single files over 1000 lines** are hard to maintain. Split structure:
 
 ```
 project/
@@ -273,4 +271,4 @@ Load in order in HTML:
 <script type="text/babel" src="src/app.jsx"></script>
 ```
 
-**At the end of every file**, use `Object.assign(window, {...})` to export anything that needs to be shared.
+**At end of every file**, use `Object.assign(window, {...})` to export anything shared.
