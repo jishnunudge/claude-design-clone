@@ -4,7 +4,7 @@ Technical standards for prototyping with HTML + React + Babel. Violating these w
 
 ## Pinned Script Tags (use these exact versions)
 
-Place these three script tags in `<head>`, using **fixed versions + integrity hashes**:
+Place in `<head>` using **fixed versions + integrity hashes**:
 
 ```html
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@ Place these three script tags in `<head>`, using **fixed versions + integrity ha
 
 **Do not** use unpinned versions like `react@18` or `react@latest` — causes version drift / caching issues.
 
-**Do not** omit `integrity` — last line of defense if CDN is hijacked or tampered with.
+**Do not** omit `integrity` — last line of defense against CDN hijacking.
 
 ## File Structure
 
@@ -51,7 +51,7 @@ Loading order in HTML:
 
 ### Rule 1: styles objects must use unique names
 
-**Wrong** (breaks with multiple components):
+**Wrong** (will break with multiple components):
 ```jsx
 // components.jsx
 const styles = { button: {...}, card: {...} };
@@ -85,7 +85,7 @@ const sidebarStyles = {
 
 ### Rule 2: Scope is not shared — manual export required
 
-**Key concept**: Each `<script type="text/babel">` is compiled independently by Babel; **scopes do not communicate**. `Terminal` defined in `components.jsx` is **undefined by default** in `pages.jsx`.
+**Key concept**: Each `<script type="text/babel">` is compiled independently by Babel; scopes **do not communicate**. `Terminal` defined in `components.jsx` is **undefined by default** in `pages.jsx`.
 
 **Solution**: At end of each component file, export onto `window`:
 
@@ -101,15 +101,15 @@ Object.assign(window, {
 });
 ```
 
-`pages.jsx` can then use `<Terminal />` directly — JSX looks for `window.Terminal`.
+Then `pages.jsx` can use `<Terminal />` directly — JSX looks for `window.Terminal`.
 
 ### Rule 3: Do not use scrollIntoView
 
-`scrollIntoView` pushes the entire HTML container upward, breaking the web harness layout. **Never use it**.
+`scrollIntoView` pushes entire HTML container upward, breaking web harness layout. **Never use it**.
 
 Alternatives:
 ```js
-// Scroll to a position within a container
+// Scroll to position within container
 container.scrollTop = targetElement.offsetTop;
 
 // Or use element.scrollTo
@@ -123,11 +123,9 @@ container.scrollTo({
 
 Some native design-agent environments (like Claude.ai Artifacts) provide `window.claude.complete` with no config required, but most agent environments (Claude Code / Codex / Cursor / Trae / etc.) **do not** have this locally.
 
-If your HTML prototype needs to call an LLM for a demo, three options:
-
 ### Option A: Don't make real calls — use a mock
 
-Recommended for demos. Fake helper returning preset responses:
+Recommended for demos. Fake helper with preset responses:
 ```jsx
 window.claude = {
   async complete(prompt) {
@@ -139,7 +137,7 @@ window.claude = {
 
 ### Option B: Call the Anthropic API for real
 
-Requires an API key; user must enter their own. **Never hard-code a key in HTML**.
+Requires API key; user must enter their own. **Never hard-code a key in HTML**.
 
 ```html
 <input id="api-key" placeholder="Paste your Anthropic API key" />
@@ -167,11 +165,11 @@ window.claude = {
 </script>
 ```
 
-**Note**: Direct browser calls to the Anthropic API will hit CORS issues. If preview environment doesn't support CORS bypass, use Option A, or tell the user they need a proxy backend.
+**Note**: Direct Anthropic API calls from browser hit CORS issues. If preview environment doesn't support CORS bypass, use Option A mock or tell user they need a proxy backend.
 
-### Option C: Use agent's LLM to pre-generate mock data
+### Option C: Use agent's LLM to generate mock data
 
-For local demos only: within current agent session, use agent's LLM capability to pre-generate mock response data, then hard-code into HTML. Runtime has zero API dependency.
+For local demos only: use current agent session's LLM to pre-generate mock response data, hard-code into HTML. Runtime has zero API dependency.
 
 ## Typical HTML Starter Template
 
@@ -230,13 +228,13 @@ For local demos only: within current agent session, use agent's LLM capability t
 → `const styles` defined in one file, overwritten by another. Give each a specific name.
 
 **`Terminal is not defined`**
-→ Scope doesn't cross files. Add `Object.assign(window, {Terminal})` at end of the defining file.
+→ Scope doesn't cross files. Add `Object.assign(window, {Terminal})` at end of file where Terminal is defined.
 
-**Entire page is white, no errors in console**
-→ Likely a JSX syntax error Babel didn't report. Swap `babel.min.js` for unminified `babel.js` — clearer error messages.
+**Entire page white, no console errors**
+→ Likely JSX syntax error Babel didn't report. Swap `babel.min.js` for unminified `babel.js` — clearer error messages.
 
 **ReactDOM.createRoot is not a function**
-→ Wrong version. Confirm react-dom@18.3.1 (not 17 or anything else).
+→ Wrong version. Confirm using react-dom@18.3.1 (not 17 or anything else).
 
 **`Objects are not valid as a React child`**
 → Rendered an object instead of JSX / string. Usually `{someObj}` when you meant `{someObj.name}`.
@@ -271,4 +269,4 @@ Load in order in HTML:
 <script type="text/babel" src="src/app.jsx"></script>
 ```
 
-**At end of every file**, use `Object.assign(window, {...})` to export anything shared.
+**At end of every file**, use `Object.assign(window, {...})` to export anything that needs to be shared.

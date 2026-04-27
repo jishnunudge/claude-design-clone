@@ -8,14 +8,14 @@
 ## 1. WeChat Official Account Cover / Article Header Image
 
 **Specs**:
-- Cover: 2.35:1 (900×383px or 1200×510px)
+- Cover image: 2.35:1 (900×383px or 1200×510px)
 - In-article illustration: 16:9 (1200×675px) or 4:3 (1200×900px)
 
 **Key design requirements**:
 - Visual impact first (users scan quickly in feed)
 - Minimal or no text (WeChat title overlays on top)
 - Moderate color saturation (WeChat reading environment is predominantly white)
-- Avoid excessive detail (must be recognizable as thumbnail)
+- Avoid excessive detail (must remain recognizable as thumbnail)
 
 **Recommended styles**: 01 Pentagram / 11 Build / 12 Sagmeister / 18 Kenya Hara / 07 Field.io
 
@@ -36,13 +36,13 @@
 
 **Specs**:
 - 16:9 (1200×675px) — most versatile
-- 1:1 (800×800px) — emphasis
-- 4:3 (1200×900px) — information-dense content
+- 1:1 (800×800px) — for emphasis
+- 4:3 (1200×900px) — for information-dense content
 
 **Key design requirements**:
-- Serves the article's argument, not decoration
+- Serves article's argument, not decoration
 - Creates visual rhythm with surrounding context
-- Expresses a single core concept
+- Expresses single core concept concisely
 - AI generation preferred; HTML screenshot only for precise data tables
 
 **Recommended styles**: Choose based on article tone; commonly: 01 / 04 / 10 / 17 / 18
@@ -70,7 +70,7 @@
 - Clear information hierarchy (title → key data → details)
 - Data must be accurate — no fabrication
 - Visual flow guides reader's eye path
-- Icons / charts used appropriately to aid comprehension
+- Use icons / charts appropriately to aid comprehension
 
 **Recommended styles**: 04 Fathom / 10 Müller-Brockmann / 02 Stamen / 17 Takram
 
@@ -122,12 +122,12 @@
 - Letter portrait (216×279mm / 612×792pt)
 
 **Key design requirements**:
-- Optimized for long-form reading (66 chars/line, line height 1.5-1.8)
+- Optimized for long-form reading (66 characters per line, line height 1.5-1.8)
 - Clear chapter navigation system
 - Consistent header / footer / page number design
 - Elegant coexistence of charts and body text
 - Citation / footnote system
-- Polished cover page
+- Polished cover page design
 
 **Recommended styles**: 10 Müller-Brockmann / 04 Fathom / 03 Information Architects / 17 Takram / 19 Irma Boom
 
@@ -153,7 +153,7 @@
 
 **Key design requirements**:
 - Communicate core value within 5 seconds of first screen
-- Clear CTA
+- Clear CTA button
 - Scroll narrative structure (problem → solution → proof → action)
 - Mobile adaptation
 - Load speed
@@ -183,8 +183,8 @@
 **Key design requirements**:
 - Touch-friendly (minimum tap target 44×44pt)
 - Consistency with system design language
-- Standard status bar / navigation bar / tab bar handling
-- Moderate information density (mobile should not be dense)
+- Standard handling of status bar / navigation bar / tab bar
+- Moderate information density (mobile should not be too dense)
 
 **Recommended styles**: 17 Takram / 11 Build / 03 Information Architects / 01 Pentagram
 
@@ -211,7 +211,7 @@
 **Key design requirements**:
 - Visual appeal first (competing in waterfall feed)
 - Small amount of text OK (no more than 20% of frame)
-- Vibrant colors that aren't gaudy
+- Vibrant colors, not gaudy
 - Lifestyle feel / texture / atmosphere
 
 **Recommended styles**: 12 Sagmeister / 11 Build / 20 Neo Shen / 09 Experimental Jetset
@@ -231,10 +231,10 @@
 
 ## Combination Example
 
-**Scenario**: WeChat Official Account cover, introducing an AI coding tool — professional but warm
+**Scenario**: WeChat Official Account cover, introducing an AI coding tool — professional but with warmth
 
 **Step 1**: Choose style → 17 Takram (professional + warmth)
-**Step 2**: Combine Takram prompt DNA + WeChat cover scene template
+**Step 2**: Takram prompt DNA + WeChat cover scene template
 
 ```
 Takram Japanese speculative design:

@@ -30,9 +30,9 @@
 
 > Scene fit: ★★★ = Highly recommended / ★★☆ = Suitable / ★☆☆ = Requires adaptation
 > AI Gen: ★★★ = Great direct output / ★★☆ = Needs adjustment / ★☆☆ = Recommend HTML execution
-> Best Path: AI Gen (direct image output) / HTML (code rendering, precise data) / Hybrid (HTML layout + AI-generated imagery)
+> Best Path: AI Gen (direct image output) / HTML (code rendering, precise data) / Hybrid (HTML layout + AI imagery)
 
-**Core pattern**: Styles with distinct visual elements (illustration / particles / generative art) → better AI direct output. Styles relying on precise typography and data (grid / information architecture / whitespace) → more controllable via HTML.
+**Core pattern**: Styles with distinct visual elements (illustration / particles / generative art) → better AI output; styles relying on precise typography and data (grid / information architecture / whitespace) → more controllable via HTML.
 
 ---
 
@@ -43,7 +43,7 @@
 **Philosophy**: Typography is language; the grid is thought
 **Key characteristics**:
 - Extremely restrained color (black/white + 1 brand color)
-- Modern Swiss grid interpretation
+- Modern interpretation of Swiss grid system
 - Typographic composition as primary visual language
 - Strategic negative space (60%+ whitespace)
 
@@ -88,11 +88,11 @@ Stamen Design aesthetic:
 ---
 
 ### 03. Information Architects - Content-First Principle
-**Philosophy**: Design is the architecture of content, not decoration
+**Philosophy**: Design is not decoration — it is the architecture of content
 **Key characteristics**:
-- Extreme content hierarchy clarity
-- System fonts only (reading-optimized)
-- Blue hyperlink tradition
+- Extreme clarity in content hierarchy
+- System fonts only (optimized for reading)
+- Commitment to blue hyperlink tradition
 - Performance as aesthetics
 
 **Prompt DNA**:
@@ -192,7 +192,7 @@ Active Theory WebGL aesthetic:
 **Key characteristics**:
 - Generative art systems
 - Dynamic graphics differing on every visit
-- Intelligent abstract geometry composition
+- Intelligent composition of abstract geometry
 - Balance between technical feel and artistic quality
 
 **Prompt DNA**:
@@ -241,7 +241,7 @@ Resn interactive storytelling approach:
 ### 09. Experimental Jetset - Conceptual Minimalism
 **Philosophy**: One idea = one form
 **Key characteristics**:
-- Single visual metaphor through entire design
+- Single visual metaphor runs through entire design
 - Mondrian color system: blue/red/yellow + black/white
 - Typography as graphic element
 - Anti-commercial, honest design
@@ -265,7 +265,7 @@ Experimental Jetset conceptual minimalism:
 ### 10. Müller-Brockmann Legacy - Swiss Grid Purism
 **Philosophy**: Objectivity is beauty
 **Key characteristics**:
-- Mathematically precise grid (8pt baseline)
+- Mathematically precise grid system (8pt baseline)
 - Absolute left-alignment or centering
 - Monochrome or two-color schemes
 - Functionalism above all
@@ -342,7 +342,7 @@ Sagmeister & Walsh joyful philosophy:
 **Key characteristics**:
 - Hand-drawn-feeling algorithmic graphics
 - Real-time generative art
-- Pure black and white expression
+- Pure expression in black and white
 - Visibility of the tool itself
 
 **Prompt DNA**:
@@ -511,7 +511,7 @@ Irma Boom book architecture style:
 ### 20. Neo Shen - Eastern Light and Shadow Poetry
 **Philosophy**: Technology needs human warmth
 **Key characteristics**:
-- Digital ink-wash spreading interpretation
+- Digital interpretation of ink-wash spreading
 - Soft glow and halo effects
 - Poetic negative space
 - Emotional palette (deep blue, warm gray, soft gold)
@@ -538,18 +538,18 @@ Neo Shen poetic Chinese aesthetic:
 
 ### Core Principle: Describe Mood, Not Layout
 
-Short prompts > long prompts. 3 sentences of mood beats 30 lines of layout details.
+Short prompts beat long prompts. 3 sentences of mood/content outperform 30 lines of layout details.
 
 | Kills Diversity | Sparks Creativity |
 |----------------|------------------|
 | Specify color ratios (60%/25%/15%) | Describe mood ("warm like Sunday morning") |
 | Dictate layout positions ("title centered, image on right") | Reference specific aesthetic ("Pentagram editorial feel") |
-| Constrain character poses and expressions | Let AI naturally interpret the style |
-| List every visual element | Describe what the audience should feel |
+| Constrain character poses/expressions | Let AI naturally interpret the style |
+| List every visual element | Describe what audience should feel |
 
 ### Good / Bad Examples
 
-**Bad — Over-constrained (output is empty and flat):**
+**Bad — Over-constrained (AI output is empty and flat):**
 ```
 Professional presentation slide. Dark background, light text.
 Title centered at top. Two columns below. Left column: bullet points.
@@ -568,7 +568,7 @@ typography. The data tells a story of dramatic channel shift.
 ### Choosing Your Execution Path
 
 Based on "Best Path" in the quick reference table:
-- **AI Gen**: Styles with distinct visual elements (06/07/12/13/14/15/16/20) — use Gemini/Midjourney
+- **AI Gen**: Styles with distinct visual elements (06/07/12/13/14/15/16/20) — use Gemini/Midjourney for direct output
 - **HTML rendering**: Styles relying on precise typography (01/03/04/10/11/17/18) — code controls data and layout
 - **Hybrid**: HTML for structural layout + AI-generated imagery/backgrounds (02/05/08/09/19)
 
@@ -576,8 +576,8 @@ Based on "Best Path" in the quick reference table:
 
 1. ❌ Don't write "in the style of Pentagram" directly → ✅ Describe specific design characteristics instead
 2. Text often goes wrong in AI generation → Replace text after generation
-3. Proportions are easily distorted → Specify aspect ratio explicitly
-4. Generate 3-5 variants first, then refine the best one
+3. Proportions easily distort → Specify aspect ratio explicitly
+4. Generate 3-5 variants first, then refine best one
 
 **Default aesthetic no-go zones** (users can override for their own brand):
 - ❌ Cyber neon / dark blue background (#0D1117)

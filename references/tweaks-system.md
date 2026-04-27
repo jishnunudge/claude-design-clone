@@ -1,16 +1,16 @@
 # Tweaks: Real-Time Design Variant Parameter Tuning
 
-Tweaks are a core capability of this skill — letting users switch between variations and adjust parameters in real time without touching the code.
+Tweaks are a core capability of this skill — letting users switch variations and adjust parameters in real time without touching code.
 
-**Cross-agent environment compatibility**: Some native design-agent environments (like Claude.ai Artifacts) rely on the host's postMessage to write tweak values back to the source file for persistence. This skill uses a **pure frontend localStorage approach** — the effect is identical (state survives refresh), but persistence happens in browser localStorage rather than the source file. This approach works in any agent environment (Claude Code / Codex / Cursor / Trae / etc.).
+**Cross-agent environment compatibility**: Some native design-agent environments (like Claude.ai Artifacts) rely on host's postMessage to write tweak values back to source file for persistence. This skill uses **pure frontend localStorage** — identical effect (state survives refresh), but persistence happens in browser localStorage rather than source file. Works in any agent environment (Claude Code / Codex / Cursor / Trae / etc.).
 
 ## When to Add Tweaks
 
-- The user explicitly asks for "parameter tuning" / "switching between multiple versions"
-- When the design has multiple variations that need to be compared
-- The user hasn't said so, but you judge subjectively that **adding a few insightful tweaks would help the user see the possibility space**
+- User explicitly asks for "parameter tuning" / "switching between multiple versions"
+- Design has multiple variations needing comparison
+- User hasn't asked, but **adding a few insightful tweaks would help user see possibility space**
 
-Default recommendation: **Add 2-3 tweaks to every design** (color theme / font size / layout variant) even if the user didn't ask — showing users the space of possibilities is part of the design service.
+Default recommendation: **Add 2-3 tweaks to every design** (color theme / font size / layout variant) even without asking — showing users possibility space is part of design service.
 
 ## Implementation (Pure Frontend Version)
 
@@ -55,7 +55,7 @@ function useTweaks() {
 
 ### Tweaks Panel UI
 
-Floating panel in the bottom-right corner. Collapsible:
+Floating panel bottom-right, collapsible:
 
 ```jsx
 function TweaksPanel() {
@@ -176,8 +176,6 @@ function TweaksPanel() {
 
 ### Applying Tweaks
 
-Use Tweaks in the main component:
-
 ```jsx
 function App() {
   const { tweaks } = useTweaks();
@@ -196,7 +194,7 @@ function App() {
 }
 ```
 
-Use the variables in CSS:
+Use variables in CSS:
 
 ```css
 button.cta {
@@ -208,12 +206,10 @@ button.cta {
 
 ## Typical Tweak Options
 
-What tweaks to add for different design types:
-
 ### General
 - Primary color (color picker)
 - Font size (slider 12-24px)
-- Typeface (select: display font vs body font)
+- Typeface (select: display vs body font)
 - Dark mode (toggle)
 
 ### Slide Deck
@@ -223,9 +219,9 @@ What tweaks to add for different design types:
 - Information density (minimal / standard / dense)
 
 ### Product Prototype
-- Layout variant (layout A / B / C)
+- Layout variant (A / B / C)
 - Animation speed (0.5x-2x)
-- Data volume (mock data count: 5 / 20 / 100)
+- Data volume (mock count: 5 / 20 / 100)
 - State (empty / loading / success / error)
 
 ### Animation
@@ -235,14 +231,14 @@ What tweaks to add for different design types:
 
 ### Landing Page
 - Hero style (image / gradient / pattern / solid)
-- CTA copy (a few variants)
+- CTA copy (variants)
 - Structure (single column / two column / sidebar)
 
 ## Tweaks Design Principles
 
 ### 1. Meaningful options — not busywork
 
-Every tweak must expose **real design choices**. Don't add tweaks that no one would actually switch (e.g., a border-radius 0-50px slider — users will find that every intermediate value looks bad).
+Every tweak must expose **real design choices**. Don't add tweaks no one would actually switch (e.g., border-radius 0-50px slider — every intermediate value looks bad).
 
 Good tweaks expose **discrete, considered variations**:
 - "Corner style": No rounding / Subtle rounding / Full rounding (three options)
@@ -250,15 +246,13 @@ Good tweaks expose **discrete, considered variations**:
 
 ### 2. Less is more
 
-A design's Tweaks panel should have **at most 5-6 options**. Any more and it becomes a "configuration page," losing the point of quickly exploring variations.
+Tweaks panel should have **at most 5-6 options**. More becomes "configuration page," losing the point.
 
 ### 3. Default value is a finished design
 
-Tweaks are the **icing on the cake**. The default values must already constitute a complete, publishable design. What the user sees after closing the Tweaks panel is the deliverable.
+Tweaks are **icing on the cake**. Default values must already constitute complete, publishable design. What user sees after closing the panel is the deliverable.
 
 ### 4. Group options logically
-
-When there are many options, group them:
 
 ```
 ---- Visual ----
@@ -273,7 +267,7 @@ Data Volume | State
 
 ## Forward Compatibility with Source-Level Persistent Hosts
 
-If you later want to upload the design to an environment that supports source-level tweaks (like Claude.ai Artifacts), keep the **EDITMODE marker block**:
+To upload later to environments supporting source-level tweaks (like Claude.ai Artifacts), keep the **EDITMODE marker block**:
 
 ```jsx
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -284,26 +278,26 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 ```
 
-The marker block has **no effect** in the localStorage approach (it's just a plain comment), but in hosts that support source write-back it will be read and enable source-level persistence. Adding this does no harm to the current environment while maintaining forward compatibility.
+Marker has **no effect** in localStorage approach (plain comment), but in hosts supporting source write-back it enables source-level persistence. Adding it does no harm and maintains forward compatibility.
 
 ## Common Issues
 
-**The Tweaks panel covers the design content**
-→ Make it collapsible. Collapsed by default, showing a small button — users expand it when they want it.
+**Tweaks panel covers design content**
+→ Make collapsible. Collapsed by default showing small button — expand when needed.
 
-**Users have to re-enter settings after switching tweaks**
-→ Already using localStorage. If state doesn't persist after a refresh, check whether localStorage is available (private/incognito mode will fail — wrap in a try/catch).
+**Users must re-enter settings after switching tweaks**
+→ Already using localStorage. If state doesn't persist after refresh, check localStorage availability (private/incognito mode will fail — wrap in try/catch).
 
-**Multiple HTML pages need to share tweaks**
-→ Add the project name to the localStorage key: `design-tweaks-[projectName]`.
+**Multiple HTML pages need shared tweaks**
+→ Add project name to localStorage key: `design-tweaks-[projectName]`.
 
-**I want tweaks to have linked/dependent relationships**
+**Want tweaks with linked/dependent relationships**
 → Add logic inside `update`:
 
 ```jsx
 const update = (patch) => {
   let next = { ...tweaks, ...patch };
-  // Linked behavior: switching to dark mode automatically changes text color
+  // Linked behavior: dark mode automatically changes text color
   if (patch.dark === true && !patch.textColor) {
     next.textColor = '#F0EEE6';
   }

@@ -9,12 +9,12 @@ Traps most easily fallen into in AI design. This is a "what not to do" checklist
 **❌ Aggressive gradient backgrounds**
 - Purple → pink → blue full-screen gradients (signature of AI-generated web pages)
 - Rainbow gradients in any direction
-- Mesh gradients filling the background
-- ✅ Want gradients: subtle, monochromatic, intentional accent use (e.g., button hover)
+- Mesh gradients filling background
+- ✅ Want gradients: subtle, monochromatic, used intentionally as accents (e.g., button hover)
 
 **❌ Rounded cards + left border accent color**
 ```css
-/* Signature of an AI-flavored card */
+/* This is the signature of an AI-flavored card */
 .card {
   border-radius: 12px;
   border-left: 4px solid #3b82f6;
@@ -24,15 +24,15 @@ Traps most easily fallen into in AI design. This is a "what not to do" checklist
 Rampant in AI-generated dashboards. Want emphasis? Use design-considered approaches: background color contrast, font weight/size contrast, plain dividers, or skip card containers altogether.
 
 **❌ Emoji decoration**
-Unless the brand uses emoji (like Notion, Slack), don't put emoji in UI. **Especially avoid**:
+Unless brand uses emoji (like Notion, Slack), don't put emoji in UI. **Especially avoid**:
 - 🚀 ⚡️ ✨ 🎯 💡 before headings
 - ✅ in feature lists
 - → inside CTA buttons (standalone arrows OK; emoji arrows not)
 
-No icons? Use a real icon library (Lucide/Heroicons/Phosphor) or a placeholder.
+No icons? Use real icon library (Lucide/Heroicons/Phosphor) or placeholder.
 
 **❌ SVG imagery**
-Don't use SVG to draw people, scenes, devices, objects, or abstract art. AI-drawn SVG imagery is immediately recognizable — naive and cheap. **A gray rectangle labeled "Illustration placeholder 1200×800" is 100× better than a clumsy SVG hero illustration**.
+Don't use SVG to draw people, scenes, devices, objects, or abstract art. AI-drawn SVG is immediately recognizable — naive and cheap. **Gray rectangle with text label "Illustration placeholder 1200×800" is 100× better than clumsy SVG hero illustration**.
 
 Acceptable SVG uses only:
 - Real icons (16×16 to 32×32)
@@ -40,19 +40,19 @@ Acceptable SVG uses only:
 - Data viz charts
 
 **❌ Excessive iconography**
-Not every heading / feature / section needs an icon. Overusing icons makes interfaces look like toys.
+Not every heading / feature / section needs an icon. Overusing icons makes interface look like a toy.
 
 **❌ "Data slop"**
 Made-up stats as decoration:
-- "10,000+ happy customers" (unverified)
+- "10,000+ happy customers" (you don't know if that's true)
 - "99.9% uptime" (don't write without real data)
-- Decorative "metric cards" of icons + numbers + phrases
+- Decorative metric cards of icons + numbers + phrases
 - Fake data in mock tables
 
-No real data? Leave a placeholder or ask the user.
+No real data → leave placeholder or ask user.
 
 **❌ "Quote slop"**
-Made-up testimonials or celebrity quotes. Leave a placeholder and ask for real quotes.
+Made-up testimonials or celebrity quotes. Leave placeholder; ask user for real quotes.
 
 ### Typography Traps
 
@@ -61,29 +61,29 @@ Made-up testimonials or celebrity quotes. Leave a placeholder and ask for real q
 - Roboto
 - Arial / Helvetica
 - Pure system font stacks
-- Fraunces (AI discovered and overused it)
+- Fraunces (AI discovered and overused)
 - Space Grotesk (currently AI's favorite)
 
 **✅ Use distinctive display + body pairings**:
-- Serif display + sans-serif body (editorial)
+- Serif display + sans body (editorial)
 - Mono display + sans body (technical)
 - Heavy display + light body (contrast)
 - Variable font for weight animation in hero
 
 Font resources:
-- Underused Google Fonts gems: Instrument Serif, Cormorant, Bricolage Grotesque, JetBrains Mono
-- Open-source font sites (siblings to Fraunces, Adobe Fonts)
+- Underused Google Fonts gems (Instrument Serif, Cormorant, Bricolage Grotesque, JetBrains Mono)
+- Open-source font sites
 - Don't invent font names
 
 ### Color Traps
 
 **❌ Inventing colors from scratch**
-Usually turns out inharmonious.
+Designing entirely unfamiliar color sets usually turns out inharmonious.
 
 **✅ Strategy**:
-1. Has brand colors → use them; fill missing tokens with oklch interpolation
+1. Has brand colors → use them; fill missing tokens using oklch interpolation
 2. Has reference → sample colors from reference product screenshot
-3. Zero context → pick known color system (Radix Colors / Tailwind default / Anthropic brand)
+3. Starting from zero → pick known color system (Radix Colors / Tailwind default / Anthropic brand)
 
 **oklch color definition** — most modern approach:
 ```css
@@ -95,45 +95,45 @@ Usually turns out inharmonious.
 ```
 oklch ensures hue doesn't drift when adjusting lightness — more reliable than hsl.
 
-**❌ Casually adding an inverted dark mode**
-Dark mode isn't simple color inversion. Good dark mode requires re-tuning saturation, contrast, and accent colors. If you're not doing that, don't add it.
+**❌ Casually adding inverted dark mode**
+Dark mode is not simple color inversion. Good dark mode requires re-tuning saturation, contrast, and accent colors. If unwilling to do that, don't add dark mode.
 
 ### Layout Traps
 
 **❌ Bento grid overuse**
-Every AI-generated landing page wants bento. Unless your information structure genuinely suits it, use a different layout.
+Every AI-generated landing page wants bento layout. Unless information structure genuinely suits bento, use different layout.
 
 **❌ Big hero + 3-column features + testimonials + CTA**
-This template is done to death.
+This landing page template is done to death. Want to innovate, actually innovate.
 
-**❌ Every card in a grid looks identical**
-Real designers produce asymmetric, varying-size cards — some with images, some text-only, some spanning columns.
+**❌ Identical cards in card grid**
+Asymmetric, varying-size cards — some with images, some text-only, some spanning columns — that's what real designers produce.
 
 ## Content Standards
 
 ### 1. Don't add filler content
 
-Every element must earn its place. Empty space is a design problem — solve with **composition** (contrast, rhythm, whitespace), not by filling with content.
+Every element must earn its place. Empty space is a design problem — solve with **composition** (contrast, rhythm, whitespace), **not** by filling with content.
 
-**Questions to identify filler**:
-- Remove this content — does design get worse? If no, remove it.
-- What real problem does this element solve? If "making the page feel less empty," delete it.
+**Identifying filler**:
+- Remove this content — does design get worse? If "no," remove it.
+- What real problem does this element solve? If "making page feel less empty," delete it.
 - Is there real data supporting this stat/quote/feature? If not, don't make it up.
 
 "One thousand no's for every yes."
 
 ### 2. Ask before adding material
 
-Think another section / page / block would help? Ask the user first — don't add unilaterally.
+Think adding another section / page / block would improve things? Ask user first — don't add unilaterally.
 
 Reasons:
-- User knows their audience better
+- User knows their audience better than you
 - Adding content has cost; user may not want it
 - Unilateral additions violate the "junior designer reporting to senior" relationship
 
 ### 3. Create a system up front
 
-After exploring design context, **verbally state the system** and let user confirm:
+After exploring design context, **verbally state system you intend to use** and let user confirm:
 
 ```markdown
 My design system:
@@ -146,7 +146,7 @@ My design system:
 Confirm this direction and I'll begin.
 ```
 
-Begin only after confirmation. Prevents "finishing half the work only to find the direction was wrong."
+Begin only after user confirms. Prevents "finishing half the work only to discover direction was wrong."
 
 ## Scale Specs
 
@@ -179,12 +179,12 @@ Begin only after confirmation. Prevents "finishing half the work only to find th
 
 ## CSS Power Moves
 
-**Advanced CSS features** — use them boldly:
+**Advanced CSS features** — use boldly:
 
 ### Typography
 
 ```css
-/* Makes heading line breaks more natural — avoids a lone word on the last line */
+/* Makes heading line breaks more natural — avoids lone word on last line */
 h1, h2, h3 { text-wrap: balance; }
 
 /* Body text wrapping — avoids widows and orphans */
@@ -248,13 +248,13 @@ p {
 
 ## Decision Quick Reference: When You're Unsure
 
-- Want to add a gradient? → Probably don't
-- Want to add an emoji? → Don't
-- Want rounded corners + border-left accent on a card? → Don't — find another approach
-- Want to draw a hero illustration in SVG? → Don't — use a placeholder
-- Want a decorative quote? → Ask if user has a real quote first
-- Want a row of icon features? → Ask if icons are needed — they probably aren't
+- Want to add gradient? → Probably don't
+- Want to add emoji? → Don't
+- Want rounded corners + border-left accent? → Don't — find another approach
+- Want SVG hero illustration? → Don't — use placeholder
+- Want decorative quote? → Ask if user has real quote first
+- Want row of icon features? → Ask if icons needed — probably aren't
 - Using Inter? → Switch to something more distinctive
-- Using a purple gradient? → Switch to a brand-grounded color choice
+- Using purple gradient? → Switch to brand-grounded color choice
 
-**When you feel "adding this would look better" — that's usually AI slop**. Start with the simplest version and only add when the user asks.
+**Feeling "adding this would look better" — usually a sign of AI slop**. Start simplest; add only when user asks.
